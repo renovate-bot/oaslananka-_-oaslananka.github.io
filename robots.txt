@@ -1,5 +1,5 @@
-# robots.txt for https://oaslananka.me/
+# robots.txt for https://oaslananka.dev/
 User-agent: *
 Allow: /
 
-Sitemap: https://oaslananka.me/sitemap.xml
+Sitemap: https://oaslananka.dev/sitemap.xml

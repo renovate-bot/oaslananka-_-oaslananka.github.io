@@ -1,6 +1,6 @@
 # Osman Aslan - Portfolio Website
 
-[![GitHub Pages](https://img.shields.io/badge/Live-oaslananka.me-blue?style=flat-square)](https://oaslananka.me/)
+[![GitHub Pages](https://img.shields.io/badge/Live-oaslananka.dev-blue?style=flat-square)](https://oaslananka.dev/)
 
 Modern, SEO-optimized portfolio for **Osman Aslan** - Software & Embedded Systems Engineer with 10+ years of experience in AI/IoT, real-time systems, and industrial automation.
 
@@ -46,6 +46,7 @@ oaslananka.github.io/
 ## ✏️ Updating Content
 
 Edit `data/profile.json` for:
+
 - Personal info, email, location
 - Experience timeline
 - Case studies
@@ -70,7 +71,7 @@ Edit `data/profile.json` for:
 
 ## 📬 Contact
 
-- **Website:** [oaslananka.me](https://oaslananka.me)
-- **Email:** [info@oaslananka.me](mailto:info@oaslananka.me)
+- **Website:** [oaslananka.dev](https://oaslananka.dev)
+- **Email:** [info@oaslananka.dev](mailto:info@oaslananka.dev)
 - **LinkedIn:** [linkedin.com/in/oaslananka](https://linkedin.com/in/oaslananka)
 - **GitHub:** [github.com/oaslananka](https://github.com/oaslananka)
