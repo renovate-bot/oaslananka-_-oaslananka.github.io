@@ -2,7 +2,14 @@
 
 [![GitHub Pages](https://img.shields.io/badge/Live-oaslananka.dev-blue?style=flat-square)](https://oaslananka.dev/)
 
-Modern, SEO-optimized portfolio for **Osman Aslan** - Software & Embedded Systems Engineer with 10+ years of experience in AI/IoT, real-time systems, and industrial automation.
+Fallback landing page for **oaslananka.dev**.
+
+## Attribution
+
+The main portfolio experience is based on the original open-source
+[`itsnitinr/vscode-portfolio`](https://github.com/itsnitinr/vscode-portfolio)
+project by [Nitin Ranganath](https://github.com/itsnitinr), then forked and
+adapted for my own portfolio, content, and deployment setup.
 
 ## 🚀 Quick Start
 
