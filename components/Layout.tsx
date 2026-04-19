@@ -50,7 +50,7 @@ const Layout = ({ children }: LayoutProps) => {
       'p': '/projects',
       'r': '/articles',
       'c': '/contact',
-      'g': '/github',
+      'g': '/open-source',
       's': '/settings',
     };
 

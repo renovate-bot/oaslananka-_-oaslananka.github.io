@@ -75,12 +75,12 @@ const CommandPalette = ({ isOpen, onClose, onToggleTerminal, isTerminalOpen }: C
         action: () => router.push('/contact'),
       },
       {
-        id: 'go-github',
-        label: 'Go to GitHub',
+        id: 'go-open-source',
+        label: 'Go to Open Source',
         category: 'Navigation',
         shortcut: 'G G',
         icon: <VscGithubAlt size={16} />,
-        action: () => router.push('/github'),
+        action: () => router.push('/open-source'),
       },
       {
         id: 'go-settings',

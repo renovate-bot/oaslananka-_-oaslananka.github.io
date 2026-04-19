@@ -75,9 +75,9 @@ export const workspaceItems: WorkspaceItem[] = [
     showInExplorer: true,
   },
   {
-    path: '/github',
-    label: 'GitHub',
-    filename: 'github.md',
+    path: '/open-source',
+    label: 'Open Source',
+    filename: 'open-source.md',
     icon: '/logos/markdown_icon.svg',
     sidebarIcon: VscGithubAlt,
     section: 'top',
@@ -103,7 +103,7 @@ const sortWorkspaceItemsByPath = (paths: string[]) =>
 
 export const sidebarTopItems = sortWorkspaceItemsByPath([
   '/',
-  '/github',
+  '/open-source',
   '/projects',
   '/articles',
   '/contact',

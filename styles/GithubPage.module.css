@@ -72,6 +72,12 @@
   transform: translateY(-1px);
 }
 
+.summary {
+  margin: 0 0 24px;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.7;
+}
+
 .notice {
   margin: 0 0 24px;
   padding: 14px 16px;
