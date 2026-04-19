@@ -19,8 +19,8 @@ This repository is the source of truth for the portfolio at
 This repository now handles both concerns:
 
 - the main Next.js source code used by Vercel
-- a GitHub Pages redirect workflow that keeps `oaslananka.github.io` pointing to
-  the canonical domain
+- a lightweight `docs/` redirect published by GitHub Pages so
+  `oaslananka.github.io` keeps forwarding visitors to the canonical domain
 
 ## Attribution
 
@@ -58,19 +58,14 @@ Most personal content lives in `data/site.ts`.
 - Edit `data/projects.ts` for featured projects.
 - Keep secrets and API keys in `.env.local`.
 
-## CI
-
-GitHub Actions runs `npm run lint` and `npm run build` for pushes and pull
-requests targeting `main`.
-
 ## Deployment
 
 Deploy the repo on Vercel and keep the custom domain pointed at that deployment.
-GitHub Pages is published through a workflow-based redirect so the legacy
+GitHub Pages is published from the `docs/` directory so the legacy
 `oaslananka.github.io` URL continues forwarding visitors to `oaslananka.dev`.
 
 ## Next.js Resources
 
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Next.js deployment documentation](https://nextjs.org/docs/deployment)
-- [GitHub Pages custom workflow documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
+- [GitHub Pages publishing source documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
