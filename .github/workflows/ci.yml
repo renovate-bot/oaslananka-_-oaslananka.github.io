@@ -27,8 +27,9 @@ jobs:
   lint-typecheck-build:
     name: Lint / Typecheck / Build
     if: >-
-      github.event_name != 'pull_request' ||
-      github.event.pull_request.draft == false
+      github.repository == 'oaslananka-lab/oaslananka.github.io' &&
+      (github.event_name != 'pull_request' ||
+        github.event.pull_request.draft == false)
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:

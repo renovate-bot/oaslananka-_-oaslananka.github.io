@@ -1,0 +1,66 @@
+name: Sync From Personal
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: sync-from-personal
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  sync:
+    name: Mirror personal refs into org
+    if: github.repository == 'oaslananka-lab/oaslananka.github.io'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PERSONAL_REPO: oaslananka/oaslananka.github.io
+      ORG_REPO: oaslananka-lab/oaslananka.github.io
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Mirror branches and tags
+        run: |
+          set -euo pipefail
+
+          workdir="$(mktemp -d)"
+          trap 'rm -rf "${workdir}"' EXIT
+
+          git clone --bare "https://github.com/${PERSONAL_REPO}.git" "${workdir}/source.git"
+          cd "${workdir}/source.git"
+
+          git remote add org "https://x-access-token:${GH_TOKEN}@github.com/${ORG_REPO}.git"
+
+          while read -r ref; do
+            git push org "${ref}:${ref}" --force
+          done < <(git for-each-ref --format='%(refname)' refs/heads refs/tags)
+
+          while read -r remote_ref; do
+            local_ref="${remote_ref#refs/heads/}"
+            if ! git show-ref --verify --quiet "refs/heads/${local_ref}"; then
+              git push org ":refs/heads/${local_ref}"
+            fi
+          done < <(git ls-remote --heads org | awk '{print $2}')
+
+          while read -r remote_ref; do
+            local_ref="${remote_ref#refs/tags/}"
+            if ! git show-ref --verify --quiet "refs/tags/${local_ref}"; then
+              git push org ":refs/tags/${local_ref}"
+            fi
+          done < <(git ls-remote --tags org | awk '{print $2}' | grep -v '\^{}$')
+
+      - name: Dispatch org verification workflows
+        run: |
+          set -euo pipefail
+          gh workflow run CI --repo "${ORG_REPO}" --ref main
+          gh workflow run Security --repo "${ORG_REPO}" --ref main
+          gh workflow run Release --repo "${ORG_REPO}" --ref main
