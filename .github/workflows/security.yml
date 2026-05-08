@@ -147,4 +147,5 @@ jobs:
           set -euo pipefail
           python -m pip install zizmor --break-system-packages 2>/dev/null || \
             python -m pip install --user zizmor
-          python -m zizmor .github/workflows/ --min-severity medium
+          export PATH="${HOME}/.local/bin:${PATH}"
+          zizmor .github/workflows/ --min-severity medium

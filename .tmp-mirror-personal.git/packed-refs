@@ -1,0 +1,19 @@
+# pack-refs with: peeled fully-peeled sorted 
+486d993bc3f53a2514a65bcf0f781a1ecff6a845 refs/heads/dependabot/npm_and_yarn/eslint-10.3.0
+c7394e166abd0b722dbe928b106e68b916774dff refs/heads/dependabot/npm_and_yarn/next-react-d35b2cbc55
+cd4dc1d7f122ff8ee79a6b5c9ff0728758e96006 refs/heads/dependabot/npm_and_yarn/react-github-calendar-5.0.6
+30789664e00db9a604929b540400a12e0a3dc676 refs/heads/dependabot/npm_and_yarn/types-dc218f441a
+c6b1e0ea08b8747f23418594bf9d5aeb0fa2f678 refs/heads/dependabot/npm_and_yarn/typescript-6.0.3
+4f4f846ba3a7563b670f829bf7d030860dcedd41 refs/heads/main
+9657dd90f552227c3979dc820c7156916891e438 refs/pull/1/head
+46aca62e575515733dc27976ef097645627b25a5 refs/pull/2/head
+c7394e166abd0b722dbe928b106e68b916774dff refs/pull/3/head
+3aaf19acf3cbbc1e8439066af475c4b06f99567d refs/pull/3/merge
+30789664e00db9a604929b540400a12e0a3dc676 refs/pull/4/head
+7aadbe2851abdca32e09f0887283e8e03b5c9a9e refs/pull/4/merge
+cd4dc1d7f122ff8ee79a6b5c9ff0728758e96006 refs/pull/5/head
+78ea7f1ea2f208623dbbbb6073df7f23363c0e52 refs/pull/5/merge
+c6b1e0ea08b8747f23418594bf9d5aeb0fa2f678 refs/pull/6/head
+5c96286d98679df7f1776021e36d28defb2054b0 refs/pull/6/merge
+486d993bc3f53a2514a65bcf0f781a1ecff6a845 refs/pull/7/head
+7e39a19b3c03a02ee8fdb0bac302d43db76437b4 refs/pull/7/merge
