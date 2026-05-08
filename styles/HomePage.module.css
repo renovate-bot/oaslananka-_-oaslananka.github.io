@@ -12,7 +12,7 @@
 }
 
 .page::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -106,7 +106,7 @@
   opacity: 0.6;
 }
 
- .description {
+.description {
   margin: 0;
   font-size: 15px;
   line-height: 1.8;

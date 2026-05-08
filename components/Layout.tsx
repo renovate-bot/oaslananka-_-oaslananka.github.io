@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useCallback } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState, useCallback } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
-import Titlebar from '@/components/Titlebar';
-import Sidebar from '@/components/Sidebar';
-import Explorer from '@/components/Explorer';
-import Bottombar from '@/components/Bottombar';
-import Tabsbar from '@/components/Tabsbar';
-import Terminal from '@/components/Terminal';
-import CommandPalette from '@/components/CommandPalette';
+import Titlebar from "@/components/Titlebar";
+import Sidebar from "@/components/Sidebar";
+import Explorer from "@/components/Explorer";
+import Bottombar from "@/components/Bottombar";
+import Tabsbar from "@/components/Tabsbar";
+import Terminal from "@/components/Terminal";
+import CommandPalette from "@/components/CommandPalette";
 
-import styles from '@/styles/Layout.module.css';
+import styles from "@/styles/Layout.module.css";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -25,7 +25,7 @@ const Layout = ({ children }: LayoutProps) => {
   const [chordKey, setChordKey] = useState<string | null>(null);
 
   const toggleTerminal = useCallback(() => {
-    setIsTerminalOpen(prev => !prev);
+    setIsTerminalOpen((prev) => !prev);
   }, []);
 
   const openCommandPalette = useCallback(() => {
@@ -37,7 +37,7 @@ const Layout = ({ children }: LayoutProps) => {
   }, []);
 
   useEffect(() => {
-    const main = document.getElementById('main-editor');
+    const main = document.getElementById("main-editor");
     if (main) {
       main.scrollTop = 0;
     }
@@ -45,25 +45,29 @@ const Layout = ({ children }: LayoutProps) => {
 
   useEffect(() => {
     const navigationRoutes: Record<string, string> = {
-      'h': '/',
-      'a': '/about',
-      'p': '/projects',
-      'r': '/articles',
-      'c': '/contact',
-      'g': '/open-source',
-      's': '/settings',
+      h: "/",
+      a: "/about",
+      p: "/projects",
+      r: "/articles",
+      c: "/contact",
+      g: "/open-source",
+      s: "/settings",
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isCommandPaletteOpen) return;
 
-      if ((e.ctrlKey || e.metaKey) && e.key === '`') {
+      if ((e.ctrlKey || e.metaKey) && e.key === "`") {
         e.preventDefault();
         toggleTerminal();
         return;
       }
 
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'p') {
+      if (
+        (e.ctrlKey || e.metaKey) &&
+        e.shiftKey &&
+        e.key.toLowerCase() === "p"
+      ) {
         e.preventDefault();
         openCommandPalette();
         return;
@@ -71,21 +75,24 @@ const Layout = ({ children }: LayoutProps) => {
 
       const key = e.key.toLowerCase();
 
-      if (chordKey === 'g' && navigationRoutes[key]) {
+      if (chordKey === "g" && navigationRoutes[key]) {
         e.preventDefault();
         router.push(navigationRoutes[key]);
         setChordKey(null);
         return;
       }
 
-      if (chordKey === 'k' && key === 't') {
+      if (chordKey === "k" && key === "t") {
         e.preventDefault();
         openCommandPalette();
         setChordKey(null);
         return;
       }
 
-      if ((key === 'g' || key === 'k') && !(e.target instanceof Element && e.target.closest('input, textarea'))) {
+      if (
+        (key === "g" || key === "k") &&
+        !(e.target instanceof Element && e.target.closest("input, textarea"))
+      ) {
         e.preventDefault();
         setChordKey(key);
         setTimeout(() => setChordKey(null), 2000);
@@ -97,9 +104,15 @@ const Layout = ({ children }: LayoutProps) => {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [toggleTerminal, openCommandPalette, chordKey, router, isCommandPaletteOpen]);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [
+    toggleTerminal,
+    openCommandPalette,
+    chordKey,
+    router,
+    isCommandPaletteOpen,
+  ]);
 
   return (
     <div className={styles.layout}>
@@ -117,7 +130,10 @@ const Layout = ({ children }: LayoutProps) => {
           </div>
         </div>
       </div>
-      <Bottombar onTerminalToggle={toggleTerminal} isTerminalOpen={isTerminalOpen} />
+      <Bottombar
+        onTerminalToggle={toggleTerminal}
+        isTerminalOpen={isTerminalOpen}
+      />
       <CommandPalette
         isOpen={isCommandPaletteOpen}
         onClose={closeCommandPalette}

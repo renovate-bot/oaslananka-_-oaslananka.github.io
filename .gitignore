@@ -7,9 +7,11 @@
 /node_modules
 /.pnp
 .pnp.js
+.pnpm-store/
 
 # testing
 /coverage
+*.tsbuildinfo
 
 # next.js
 /.next/
@@ -37,6 +39,7 @@ yarn-error.log*
 .vercel
 
 # cursor
-.cursor
+.cursor/
+.vscode/
 .env*.local
 .env

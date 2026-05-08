@@ -1,0 +1,10 @@
+# Portfolio site: all files owned by @oaslananka
+* @oaslananka
+
+# CI/CD: extra scrutiny
+/.github/workflows/ @oaslananka
+/release-please-config.json @oaslananka
+/.release-please-manifest.json @oaslananka
+
+# Data files: identity-sensitive
+/data/ @oaslananka

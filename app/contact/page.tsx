@@ -1,12 +1,12 @@
-import { Metadata } from 'next';
+import { Metadata } from "next";
 
-import ContactCode from '@/components/ContactCode';
+import ContactCode from "@/components/ContactCode";
 
-import { siteConfig } from '@/data/site';
-import styles from '@/styles/ContactPage.module.css';
+import { siteConfig } from "@/data/site";
+import styles from "@/styles/ContactPage.module.css";
 
 export const metadata: Metadata = {
-  title: 'Contact',
+  title: "Contact",
 };
 
 const ContactPage = () => {

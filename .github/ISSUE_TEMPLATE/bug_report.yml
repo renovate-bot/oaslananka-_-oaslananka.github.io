@@ -1,0 +1,49 @@
+name: "Bug Report"
+description: "Report a bug on oaslananka.dev"
+labels: ["type:bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug report.
+
+  - type: input
+    id: url
+    attributes:
+      label: "Affected URL"
+      placeholder: "https://oaslananka.dev/projects"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Describe the bug"
+      placeholder: "What happened? What did you expect?"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: "Browser"
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: "OS / Device"
+      placeholder: "macOS 14 / iPhone 15"
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: "Screenshots"
+      placeholder: "Paste screenshots here if applicable."

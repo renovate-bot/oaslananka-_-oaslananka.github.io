@@ -1,6 +1,6 @@
-import { Metadata } from 'next';
-import Image from 'next/image';
-import GitHubCalendar from 'react-github-calendar';
+import { Metadata } from "next";
+import Image from "next/image";
+import GitHubCalendar from "react-github-calendar";
 import {
   VscGithub,
   VscLinkExternal,
@@ -8,16 +8,16 @@ import {
   VscRepo,
   VscRepoForked,
   VscStarEmpty,
-} from 'react-icons/vsc';
+} from "react-icons/vsc";
 
-import RepoCard from '@/components/RepoCard';
-import { siteConfig } from '@/data/site';
-import { Repo, User } from '@/types';
+import RepoCard from "@/components/RepoCard";
+import { siteConfig } from "@/data/site";
+import { Repo, User } from "@/types";
 
-import styles from '@/styles/GithubPage.module.css';
+import styles from "@/styles/GithubPage.module.css";
 
 export const metadata: Metadata = {
-  title: 'Open Source',
+  title: "Open Source",
 };
 
 export const revalidate = 600;
@@ -76,14 +76,17 @@ async function getGithubData() {
 
     const username = siteConfig.github.username;
     const currentRepoName =
-      siteConfig.github.repo.split('/').pop()?.toLowerCase() ?? '';
+      siteConfig.github.repo.split("/").pop()?.toLowerCase() ?? "";
     const excludedRepoNames = new Set([
       username.toLowerCase(),
       currentRepoName,
     ]);
 
     const [user, allRepos] = await Promise.all([
-      fetchGithubJson<User>(`https://api.github.com/users/${username}`, headers),
+      fetchGithubJson<User>(
+        `https://api.github.com/users/${username}`,
+        headers
+      ),
       getAllRepos(username, headers),
     ]);
 
@@ -95,7 +98,10 @@ async function getGithubData() {
 
     return { user, repos, sortedRepos, loadError: false };
   } catch (error) {
-    console.error('Failed to load GitHub data for the Open Source page.', error);
+    console.error(
+      "Failed to load GitHub data for the Open Source page.",
+      error
+    );
 
     return {
       user: null,
@@ -110,7 +116,10 @@ export default async function OpenSourcePage() {
   const { user, repos, sortedRepos, loadError } = await getGithubData();
   const profileLogin = user?.login ?? siteConfig.github.username;
   const profileUrl = `https://github.com/${profileLogin}`;
-  const totalStars = repos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
+  const totalStars = repos.reduce(
+    (acc, repo) => acc + repo.stargazers_count,
+    0
+  );
   const totalForks = repos.reduce((acc, repo) => acc + repo.forks, 0);
 
   return (
@@ -209,11 +218,11 @@ export default async function OpenSourcePage() {
               hideMonthLabels
               colorScheme="dark"
               theme={{
-                dark: ['#161B22', '#0e4429', '#006d32', '#26a641', '#39d353'],
-                light: ['#161B22', '#0e4429', '#006d32', '#26a641', '#39d353'],
+                dark: ["#161B22", "#0e4429", "#006d32", "#26a641", "#39d353"],
+                light: ["#161B22", "#0e4429", "#006d32", "#26a641", "#39d353"],
               }}
               style={{
-                width: '100%',
+                width: "100%",
               }}
             />
           </div>

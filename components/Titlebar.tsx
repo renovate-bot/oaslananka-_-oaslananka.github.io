@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 
-import { siteConfig } from '@/data/site';
-import styles from '@/styles/Titlebar.module.css';
+import { siteConfig } from "@/data/site";
+import styles from "@/styles/Titlebar.module.css";
 
 interface TitlebarProps {
   onOpenCommandPalette?: () => void;
@@ -28,7 +28,13 @@ const Titlebar = ({ onOpenCommandPalette }: TitlebarProps) => {
       <div className={styles.items}>
         <p>File</p>
         <p>Edit</p>
-        <p onClick={handleViewClick} className={styles.menuItem} title="Open Command Palette (Ctrl+Shift+P)">View</p>
+        <p
+          onClick={handleViewClick}
+          className={styles.menuItem}
+          title="Open Command Palette (Ctrl+Shift+P)"
+        >
+          View
+        </p>
         <p>Go</p>
         <p>Run</p>
         <p>Terminal</p>

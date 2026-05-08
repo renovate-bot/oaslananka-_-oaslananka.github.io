@@ -1,0 +1,64 @@
+version: "3"
+
+vars:
+  PNPM: pnpm
+
+tasks:
+  install:
+    desc: Install dependencies
+    cmds:
+      - "{{.PNPM}} install --frozen-lockfile"
+
+  format:
+    desc: Auto-format all files
+    cmds:
+      - "{{.PNPM}} run format"
+
+  format:check:
+    desc: Check formatting
+    cmds:
+      - "{{.PNPM}} run format:check"
+
+  lint:
+    desc: Run ESLint
+    cmds:
+      - "{{.PNPM}} run lint"
+
+  lint:fix:
+    desc: Auto-fix lint issues
+    cmds:
+      - "{{.PNPM}} run lint:fix"
+
+  typecheck:
+    desc: TypeScript type check
+    cmds:
+      - "{{.PNPM}} run typecheck"
+
+  build:
+    desc: Production build
+    cmds:
+      - "{{.PNPM}} run build"
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+
+  dev:
+    desc: Start dev server
+    cmds:
+      - "{{.PNPM}} run dev"
+
+  security:
+    desc: Run local security checks
+    cmds:
+      - cmd: gitleaks detect --source . --verbose
+        ignore_error: true
+      - "{{.PNPM}} audit --audit-level=high --prod"
+
+  ci:
+    desc: Run full local CI
+    deps: [install]
+    cmds:
+      - task: format:check
+      - task: lint
+      - task: typecheck
+      - task: build
+      - task: security

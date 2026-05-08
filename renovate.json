@@ -1,0 +1,32 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:best-practices"],
+  "labels": ["area:deps"],
+  "prHourlyLimit": 3,
+  "prConcurrentLimit": 5,
+  "automerge": true,
+  "automergeType": "pr",
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["patch", "minor"],
+      "automerge": true
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "labels": ["area:deps", "type:breaking"]
+    },
+    {
+      "groupName": "Next.js + React",
+      "matchPackageNames": ["next", "react", "react-dom"]
+    },
+    {
+      "groupName": "Vercel",
+      "matchPackageNames": ["/^@vercel\\//"]
+    },
+    {
+      "groupName": "TypeScript types",
+      "matchPackageNames": ["/^@types\\//"]
+    }
+  ]
+}

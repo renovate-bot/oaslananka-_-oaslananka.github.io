@@ -1,14 +1,14 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import { useState } from 'react';
-import { VscChevronRight } from 'react-icons/vsc';
+import Link from "next/link";
+import Image from "next/image";
+import { useState } from "react";
+import { VscChevronRight } from "react-icons/vsc";
 
 import {
   explorerItems,
   workspaceGroupName,
   workspaceTitle,
-} from '@/data/workspace';
-import styles from '@/styles/Explorer.module.css';
+} from "@/data/workspace";
+import styles from "@/styles/Explorer.module.css";
 
 const Explorer = () => {
   const [portfolioOpen, setPortfolioOpen] = useState(true);
@@ -27,13 +27,13 @@ const Explorer = () => {
         <label htmlFor="portfolio-checkbox" className={styles.heading}>
           <VscChevronRight
             className={styles.chevron}
-            style={portfolioOpen ? { transform: 'rotate(90deg)' } : {}}
+            style={portfolioOpen ? { transform: "rotate(90deg)" } : {}}
           />
           {workspaceGroupName}
         </label>
         <div
           className={styles.files}
-          style={portfolioOpen ? { display: 'block' } : { display: 'none' }}
+          style={portfolioOpen ? { display: "block" } : { display: "none" }}
         >
           {explorerItems.map((item) => (
             <Link href={item.path} key={item.filename}>

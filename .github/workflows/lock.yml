@@ -1,0 +1,51 @@
+name: Lock Closed Threads
+
+on:
+  schedule:
+    - cron: "45 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  lock:
+    name: Lock closed issues/PRs
+    if: github.repository == 'oaslananka-lab/oaslananka.github.io'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+        with:
+          script: |
+            const inactiveDays = 30;
+            const threshold = Date.now() - inactiveDays * 86400000;
+            const { owner, repo } = context.repo;
+            const items = await github.paginate(
+              github.rest.issues.listForRepo,
+              {
+                owner,
+                repo,
+                state: 'closed',
+                per_page: 100,
+                since: new Date(Date.now() - 180 * 86400000).toISOString()
+              }
+            );
+
+            for (const item of items) {
+              if (item.locked) continue;
+              if (new Date(item.updated_at).getTime() > threshold) continue;
+
+              await github.rest.issues.lock({
+                owner,
+                repo,
+                issue_number: item.number,
+                lock_reason: 'resolved'
+              });
+            }

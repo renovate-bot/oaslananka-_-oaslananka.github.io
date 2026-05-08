@@ -1,5 +1,5 @@
-import { permanentRedirect } from 'next/navigation';
+import { permanentRedirect } from "next/navigation";
 
 export default function GitHubPage() {
-  permanentRedirect('/open-source');
+  permanentRedirect("/open-source");
 }

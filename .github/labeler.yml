@@ -1,0 +1,45 @@
+"area:ui":
+  - changed-files:
+      - any-glob-to-any-file:
+          - components/**
+          - styles/**
+          - app/**
+          - public/**
+
+"area:data":
+  - changed-files:
+      - any-glob-to-any-file:
+          - data/**
+
+"area:config":
+  - changed-files:
+      - any-glob-to-any-file:
+          - next.config.ts
+          - tsconfig.json
+          - eslint.config.mjs
+          - vercel.json
+
+"area:ci":
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/workflows/**
+          - Taskfile.yml
+          - .pre-commit-config.yaml
+
+"area:docs":
+  - changed-files:
+      - any-glob-to-any-file:
+          - docs/**
+          - "*.md"
+
+"area:deps":
+  - changed-files:
+      - any-glob-to-any-file:
+          - pnpm-lock.yaml
+          - package.json
+
+"area:security":
+  - changed-files:
+      - any-glob-to-any-file:
+          - SECURITY.md
+          - .github/workflows/security.yml

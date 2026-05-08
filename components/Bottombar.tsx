@@ -5,11 +5,11 @@ import {
   VscWarning,
   VscSourceControl,
   VscTerminal,
-} from 'react-icons/vsc';
-import { SiNextdotjs } from 'react-icons/si';
+} from "react-icons/vsc";
+import { SiNextdotjs } from "react-icons/si";
 
-import { siteConfig } from '@/data/site';
-import styles from '@/styles/Bottombar.module.css';
+import { siteConfig } from "@/data/site";
+import styles from "@/styles/Bottombar.module.css";
 
 interface BottombarProps {
   onTerminalToggle: () => void;
@@ -38,7 +38,7 @@ const Bottombar = ({ onTerminalToggle, isTerminalOpen }: BottombarProps) => {
       </div>
       <div className={styles.container}>
         <div
-          className={`${styles.section} ${isTerminalOpen ? styles.active : ''}`}
+          className={`${styles.section} ${isTerminalOpen ? styles.active : ""}`}
           onClick={onTerminalToggle}
           title="Toggle Terminal (Ctrl+`)"
         >

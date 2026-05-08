@@ -1,0 +1,67 @@
+name: Review Thread Gate
+
+on:
+  pull_request_review:
+  pull_request_review_comment:
+  pull_request:
+    types: [synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  thread-gate:
+    name: Review Thread Gate
+    if: >-
+      github.repository == 'oaslananka-lab/oaslananka.github.io' &&
+      (github.event.pull_request == null ||
+        github.event.pull_request.draft == false)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const prNumber = Number(
+              context.payload.pull_request?.number ??
+              context.payload.review?.pull_request_url?.split('/').pop() ??
+              context.payload.comment?.pull_request_url?.split('/').pop()
+            );
+
+            if (!prNumber) {
+              core.info('No pull request number found, skipping.');
+              return;
+            }
+
+            const query = `
+              query($owner: String!, $repo: String!, $pr: Int!) {
+                repository(owner: $owner, name: $repo) {
+                  pullRequest(number: $pr) {
+                    reviewThreads(first: 100) {
+                      nodes {
+                        isResolved
+                      }
+                    }
+                  }
+                }
+              }`;
+            const result = await github.graphql(
+              query,
+              { owner, repo, pr: prNumber }
+            );
+            const threads =
+              result.repository.pullRequest.reviewThreads.nodes;
+            const unresolved = threads.filter((thread) => !thread.isResolved);
+
+            if (unresolved.length > 0) {
+              core.setFailed(
+                `${unresolved.length} unresolved review thread(s).`
+              );
+            } else {
+              core.info(`All ${threads.length} review thread(s) resolved.`);
+            }

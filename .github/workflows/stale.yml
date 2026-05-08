@@ -1,0 +1,69 @@
+name: Stale
+
+on:
+  schedule:
+    - cron: "30 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  stale:
+    name: Stale issues/PRs
+    if: github.repository == 'oaslananka-lab/oaslananka.github.io'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+        with:
+          script: |
+            const staleAfterDays = 45;
+            const closeAfterDays = 14;
+            const staleLabel = 'status:stale';
+            const exempt = new Set(['pinned', 'security']);
+            const now = Date.now();
+            const { owner, repo } = context.repo;
+            const items = await github.paginate(
+              github.rest.issues.listForRepo,
+              { owner, repo, state: 'open', per_page: 100 }
+            );
+
+            for (const item of items) {
+              const labels = item.labels.map((label) => label.name);
+              if (labels.some((label) => exempt.has(label))) continue;
+
+              const age = now - new Date(item.updated_at).getTime();
+              const staleMs = staleAfterDays * 86400000;
+              const closeMs = closeAfterDays * 86400000;
+
+              if (labels.includes(staleLabel)) {
+                if (age > closeMs) {
+                  await github.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: item.number,
+                    body: 'Closing due to inactivity.'
+                  });
+                  await github.rest.issues.update({
+                    owner,
+                    repo,
+                    issue_number: item.number,
+                    state: 'closed'
+                  });
+                }
+              } else if (age > staleMs) {
+                await github.rest.issues.addLabels({
+                  owner,
+                  repo,
+                  issue_number: item.number,
+                  labels: [staleLabel]
+                });
+              }
+            }

@@ -1,32 +1,41 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { VscColorMode } from 'react-icons/vsc';
+import { useSyncExternalStore } from "react";
+import { VscColorMode } from "react-icons/vsc";
 
-import { THEMES } from '@/lib/themes';
-import ThemeInfo from '@/components/ThemeInfo';
+import { THEMES } from "@/lib/themes";
+import ThemeInfo from "@/components/ThemeInfo";
 
-import styles from '@/styles/SettingsPage.module.css';
+import styles from "@/styles/SettingsPage.module.css";
+
+const themeChangeEvent = "portfolio-theme-change";
+const defaultTheme = "github-dark";
+
+const subscribeToTheme = (callback: () => void) => {
+  window.addEventListener("storage", callback);
+  window.addEventListener(themeChangeEvent, callback);
+
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener(themeChangeEvent, callback);
+  };
+};
+
+const getThemeSnapshot = () => localStorage.getItem("theme") || defaultTheme;
+const getServerThemeSnapshot = () => defaultTheme;
 
 const SettingsPage = () => {
-  const [activeTheme, setActiveTheme] = useState('github-dark');
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'github-dark';
-    setActiveTheme(savedTheme);
-    setIsLoaded(true);
-  }, []);
+  const activeTheme = useSyncExternalStore(
+    subscribeToTheme,
+    getThemeSnapshot,
+    getServerThemeSnapshot
+  );
 
   const handleThemeSelect = (theme: string) => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-    setActiveTheme(theme);
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+    window.dispatchEvent(new Event(themeChangeEvent));
   };
-
-  if (!isLoaded) {
-    return null;
-  }
 
   return (
     <div className={styles.page}>
@@ -38,15 +47,15 @@ const SettingsPage = () => {
           <div className={styles.headerContent}>
             <h1 className={styles.title}>Settings</h1>
             <p className={styles.subtitle}>
-              Customize your editor appearance. Choose from curated themes 
-              that match your style.
+              Customize your editor appearance. Choose from curated themes that
+              match your style.
             </p>
           </div>
         </header>
 
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Color Theme</h2>
-          
+
           <div className={styles.themesGrid}>
             {THEMES.map((theme) => (
               <ThemeInfo

@@ -1,12 +1,24 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { useRouter } from 'next/navigation';
-import { VscSymbolColor, VscTerminal, VscGoToFile, VscGear, VscColorMode, VscHome, VscAccount, VscCode, VscBook, VscMail, VscGithubAlt } from 'react-icons/vsc';
-import { MdNavigateNext } from 'react-icons/md';
+import { useState, useEffect, useCallback, useRef } from "react";
+import { useRouter } from "next/navigation";
+import {
+  VscSymbolColor,
+  VscTerminal,
+  VscGoToFile,
+  VscGear,
+  VscColorMode,
+  VscHome,
+  VscAccount,
+  VscCode,
+  VscBook,
+  VscMail,
+  VscGithubAlt,
+} from "react-icons/vsc";
+import { MdNavigateNext } from "react-icons/md";
 
-import { THEMES } from '@/lib/themes';
-import styles from '@/styles/CommandPalette.module.css';
+import { THEMES } from "@/lib/themes";
+import styles from "@/styles/CommandPalette.module.css";
 
 interface Command {
   id: string;
@@ -24,87 +36,101 @@ interface CommandPaletteProps {
   isTerminalOpen: boolean;
 }
 
-const CommandPalette = ({ isOpen, onClose, onToggleTerminal, isTerminalOpen }: CommandPaletteProps) => {
+const CommandPalette = ({
+  isOpen,
+  onClose,
+  onToggleTerminal,
+  isTerminalOpen,
+}: CommandPaletteProps) => {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [showThemePicker, setShowThemePicker] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
+  const updateSearchQuery = useCallback((value: string) => {
+    setSearchQuery(value);
+    setSelectedIndex(0);
+  }, []);
+
   const getCommands = useCallback((): Command[] => {
     const baseCommands: Command[] = [
       {
-        id: 'go-home',
-        label: 'Go to Home',
-        category: 'Navigation',
-        shortcut: 'G H',
+        id: "go-home",
+        label: "Go to Home",
+        category: "Navigation",
+        shortcut: "G H",
         icon: <VscHome size={16} />,
-        action: () => router.push('/'),
+        action: () => router.push("/"),
       },
       {
-        id: 'go-about',
-        label: 'Go to About',
-        category: 'Navigation',
-        shortcut: 'G A',
+        id: "go-about",
+        label: "Go to About",
+        category: "Navigation",
+        shortcut: "G A",
         icon: <VscAccount size={16} />,
-        action: () => router.push('/about'),
+        action: () => router.push("/about"),
       },
       {
-        id: 'go-projects',
-        label: 'Go to Projects',
-        category: 'Navigation',
-        shortcut: 'G P',
+        id: "go-projects",
+        label: "Go to Projects",
+        category: "Navigation",
+        shortcut: "G P",
         icon: <VscCode size={16} />,
-        action: () => router.push('/projects'),
+        action: () => router.push("/projects"),
       },
       {
-        id: 'go-articles',
-        label: 'Go to Articles',
-        category: 'Navigation',
-        shortcut: 'G R',
+        id: "go-articles",
+        label: "Go to Articles",
+        category: "Navigation",
+        shortcut: "G R",
         icon: <VscBook size={16} />,
-        action: () => router.push('/articles'),
+        action: () => router.push("/articles"),
       },
       {
-        id: 'go-contact',
-        label: 'Go to Contact',
-        category: 'Navigation',
-        shortcut: 'G C',
+        id: "go-contact",
+        label: "Go to Contact",
+        category: "Navigation",
+        shortcut: "G C",
         icon: <VscMail size={16} />,
-        action: () => router.push('/contact'),
+        action: () => router.push("/contact"),
       },
       {
-        id: 'go-open-source',
-        label: 'Go to Open Source',
-        category: 'Navigation',
-        shortcut: 'G G',
+        id: "go-open-source",
+        label: "Go to Open Source",
+        category: "Navigation",
+        shortcut: "G G",
         icon: <VscGithubAlt size={16} />,
-        action: () => router.push('/open-source'),
+        action: () => router.push("/open-source"),
       },
       {
-        id: 'go-settings',
-        label: 'Go to Settings',
-        category: 'Navigation',
-        shortcut: 'G S',
+        id: "go-settings",
+        label: "Go to Settings",
+        category: "Navigation",
+        shortcut: "G S",
         icon: <VscGear size={16} />,
-        action: () => router.push('/settings'),
+        action: () => router.push("/settings"),
       },
       {
-        id: 'toggle-terminal',
-        label: isTerminalOpen ? 'Close Terminal' : 'Open Terminal',
-        category: 'Terminal',
-        shortcut: 'Ctrl+`',
+        id: "toggle-terminal",
+        label: isTerminalOpen ? "Close Terminal" : "Open Terminal",
+        category: "Terminal",
+        shortcut: "Ctrl+`",
         icon: <VscTerminal size={16} />,
         action: onToggleTerminal,
       },
       {
-        id: 'change-theme',
-        label: 'Change Color Theme',
-        category: 'Preferences',
-        shortcut: 'K T',
+        id: "change-theme",
+        label: "Change Color Theme",
+        category: "Preferences",
+        shortcut: "K T",
         icon: <VscSymbolColor size={16} />,
-        action: () => setShowThemePicker(true),
+        action: () => {
+          setShowThemePicker(true);
+          setSearchQuery("");
+          setSelectedIndex(0);
+        },
       },
     ];
 
@@ -128,14 +154,14 @@ const CommandPalette = ({ isOpen, onClose, onToggleTerminal, isTerminalOpen }: C
       if (showThemePicker) {
         if (index < filteredThemes.length) {
           const theme = filteredThemes[index];
-          document.documentElement.setAttribute('data-theme', theme.theme);
-          localStorage.setItem('theme', theme.theme);
+          document.documentElement.setAttribute("data-theme", theme.theme);
+          localStorage.setItem("theme", theme.theme);
           onClose();
         }
       } else {
         if (index < filteredCommands.length) {
           filteredCommands[index].action();
-          if (filteredCommands[index].id !== 'change-theme') {
+          if (filteredCommands[index].id !== "change-theme") {
             onClose();
           }
         }
@@ -148,10 +174,10 @@ const CommandPalette = ({ isOpen, onClose, onToggleTerminal, isTerminalOpen }: C
     (e: KeyboardEvent) => {
       if (!isOpen) return;
 
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         if (showThemePicker) {
           setShowThemePicker(false);
-          setSearchQuery('');
+          updateSearchQuery("");
           setSelectedIndex(0);
         } else {
           onClose();
@@ -161,43 +187,52 @@ const CommandPalette = ({ isOpen, onClose, onToggleTerminal, isTerminalOpen }: C
 
       const items = showThemePicker ? filteredThemes : filteredCommands;
 
-      if (e.key === 'ArrowDown') {
+      if (e.key === "ArrowDown") {
         e.preventDefault();
+        if (items.length === 0) return;
         setSelectedIndex((prev) => (prev + 1) % items.length);
-      } else if (e.key === 'ArrowUp') {
+      } else if (e.key === "ArrowUp") {
         e.preventDefault();
+        if (items.length === 0) return;
         setSelectedIndex((prev) => (prev - 1 + items.length) % items.length);
-      } else if (e.key === 'Enter') {
+      } else if (e.key === "Enter") {
         e.preventDefault();
         handleSelect(selectedIndex);
       }
     },
-    [isOpen, onClose, filteredCommands, filteredThemes, selectedIndex, handleSelect, showThemePicker]
+    [
+      isOpen,
+      onClose,
+      filteredCommands,
+      filteredThemes,
+      selectedIndex,
+      handleSelect,
+      showThemePicker,
+      updateSearchQuery,
+    ]
   );
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus();
-      setSearchQuery('');
+      updateSearchQuery("");
       setSelectedIndex(0);
       setShowThemePicker(false);
     }
-  }, [isOpen]);
-
-  useEffect(() => {
-    setSelectedIndex(0);
-  }, [searchQuery, showThemePicker]);
+  }, [isOpen, updateSearchQuery]);
 
   useEffect(() => {
     if (listRef.current && selectedIndex >= 0) {
-      const selectedElement = listRef.current.children[selectedIndex] as HTMLElement;
+      const selectedElement = listRef.current.children[
+        selectedIndex
+      ] as HTMLElement;
       if (selectedElement) {
-        selectedElement.scrollIntoView({ block: 'nearest' });
+        selectedElement.scrollIntoView({ block: "nearest" });
       }
     }
   }, [selectedIndex]);
@@ -213,8 +248,12 @@ const CommandPalette = ({ isOpen, onClose, onToggleTerminal, isTerminalOpen }: C
             ref={inputRef}
             type="text"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={showThemePicker ? 'Select color theme' : 'Type a command or search...'}
+            onChange={(e) => updateSearchQuery(e.target.value)}
+            placeholder={
+              showThemePicker
+                ? "Select color theme"
+                : "Type a command or search..."
+            }
             className={styles.input}
             spellCheck={false}
             autoComplete="off"
@@ -223,7 +262,7 @@ const CommandPalette = ({ isOpen, onClose, onToggleTerminal, isTerminalOpen }: C
             <button
               className={styles.clearButton}
               onClick={() => {
-                setSearchQuery('');
+                updateSearchQuery("");
                 inputRef.current?.focus();
               }}
             >
@@ -243,7 +282,7 @@ const CommandPalette = ({ isOpen, onClose, onToggleTerminal, isTerminalOpen }: C
                   <div
                     key={theme.theme}
                     className={`${styles.item} ${
-                      selectedIndex === themeIndex ? styles.selected : ''
+                      selectedIndex === themeIndex ? styles.selected : ""
                     }`}
                     onClick={() => handleSelect(themeIndex)}
                     onMouseEnter={() => setSelectedIndex(themeIndex)}
@@ -253,7 +292,9 @@ const CommandPalette = ({ isOpen, onClose, onToggleTerminal, isTerminalOpen }: C
                     </div>
                     <div className={styles.itemContent}>
                       <span className={styles.itemLabel}>{theme.name}</span>
-                      <span className={styles.itemDescription}>{theme.publisher}</span>
+                      <span className={styles.itemDescription}>
+                        {theme.publisher}
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -263,7 +304,7 @@ const CommandPalette = ({ isOpen, onClose, onToggleTerminal, isTerminalOpen }: C
             <div className={styles.noResults}>No matching commands</div>
           ) : (
             (() => {
-              let lastCategory = '';
+              let lastCategory = "";
               let itemIndex = 0;
               return filteredCommands.map((cmd) => {
                 const showCategory = cmd.category !== lastCategory;
@@ -276,7 +317,7 @@ const CommandPalette = ({ isOpen, onClose, onToggleTerminal, isTerminalOpen }: C
                     )}
                     <div
                       className={`${styles.item} ${
-                        selectedIndex === currentIndex ? styles.selected : ''
+                        selectedIndex === currentIndex ? styles.selected : ""
                       }`}
                       onClick={() => handleSelect(currentIndex)}
                       onMouseEnter={() => setSelectedIndex(currentIndex)}
@@ -287,10 +328,10 @@ const CommandPalette = ({ isOpen, onClose, onToggleTerminal, isTerminalOpen }: C
                       </div>
                       {cmd.shortcut && (
                         <div className={styles.shortcut}>
-                          {cmd.id === 'change-theme' ? (
+                          {cmd.id === "change-theme" ? (
                             <MdNavigateNext size={16} />
                           ) : (
-                            cmd.shortcut.split(' ').map((key, i) => (
+                            cmd.shortcut.split(" ").map((key, i) => (
                               <span key={i} className={styles.key}>
                                 {key}
                               </span>

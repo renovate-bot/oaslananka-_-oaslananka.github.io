@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-import { sidebarBottomItems, sidebarTopItems } from '@/data/workspace';
-import styles from '@/styles/Sidebar.module.css';
+import { sidebarBottomItems, sidebarTopItems } from "@/data/workspace";
+import styles from "@/styles/Sidebar.module.css";
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -24,8 +24,8 @@ const Sidebar = () => {
                 size={16}
                 color={
                   pathname === path
-                    ? 'rgb(225, 228, 232)'
-                    : 'rgb(106, 115, 125)'
+                    ? "rgb(225, 228, 232)"
+                    : "rgb(106, 115, 125)"
                 }
                 className={styles.icon}
               />
@@ -41,8 +41,8 @@ const Sidebar = () => {
                 size={16}
                 color={
                   pathname === path
-                    ? 'rgb(225, 228, 232)'
-                    : 'rgb(106, 115, 125)'
+                    ? "rgb(225, 228, 232)"
+                    : "rgb(106, 115, 125)"
                 }
                 className={styles.icon}
               />

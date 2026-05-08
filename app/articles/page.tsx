@@ -1,15 +1,15 @@
-import { Metadata } from 'next';
-import { VscBook, VscLinkExternal, VscGlobe } from 'react-icons/vsc';
+import { Metadata } from "next";
+import { VscBook, VscLinkExternal, VscGlobe } from "react-icons/vsc";
 
-import ArticleCard from '@/components/ArticleCard';
+import ArticleCard from "@/components/ArticleCard";
 
-import { siteConfig } from '@/data/site';
-import { Article } from '@/types';
+import { siteConfig } from "@/data/site";
+import { Article } from "@/types";
 
-import styles from '@/styles/ArticlesPage.module.css';
+import styles from "@/styles/ArticlesPage.module.css";
 
 export const metadata: Metadata = {
-  title: 'Articles',
+  title: "Articles",
 };
 
 export const revalidate = 60;
@@ -22,10 +22,10 @@ async function getArticles(): Promise<Article[]> {
   }
 
   const res = await fetch(
-    'https://dev.to/api/articles/me/published?per_page=6',
+    "https://dev.to/api/articles/me/published?per_page=6",
     {
       headers: {
-        'api-key': apiKey,
+        "api-key": apiKey,
       },
     }
   );
@@ -53,7 +53,7 @@ export default async function ArticlesPage() {
             <div className={styles.iconWrapper}>
               <VscBook className={styles.icon} size={24} />
             </div>
-            
+
             <div className={styles.headerContent}>
               <div className={styles.headerTop}>
                 <h1 className={styles.title}>Articles</h1>
@@ -68,7 +68,7 @@ export default async function ArticlesPage() {
                   </div>
                 </div>
               </div>
-              
+
               <p className={styles.subtitle}>
                 Technical writing on web development, software projects, and
                 lessons learned while building real products.
@@ -76,7 +76,7 @@ export default async function ArticlesPage() {
             </div>
           </div>
 
-          <a 
+          <a
             href={siteConfig.links.devtoProfile}
             target="_blank"
             rel="noopener noreferrer"
@@ -98,8 +98,8 @@ export default async function ArticlesPage() {
             ))
           ) : (
             <p className={styles.subtitle}>
-              No DEV.to posts are connected yet. Add a valid `DEV_TO_API_KEY`
-              to publish articles here.
+              No DEV.to posts are connected yet. Add a valid `DEV_TO_API_KEY` to
+              publish articles here.
             </p>
           )}
         </div>

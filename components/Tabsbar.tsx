@@ -1,7 +1,7 @@
-import Tab from '@/components/Tab';
-import { tabItems } from '@/data/workspace';
+import Tab from "@/components/Tab";
+import { tabItems } from "@/data/workspace";
 
-import styles from '@/styles/Tabsbar.module.css';
+import styles from "@/styles/Tabsbar.module.css";
 
 const Tabsbar = () => {
   return (

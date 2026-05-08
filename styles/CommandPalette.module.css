@@ -27,11 +27,14 @@
   max-width: 90vw;
   background: var(--command-palette-bg, var(--sidebar-bg));
   border-radius: 6px;
-  box-shadow: 0 0 0 1px var(--command-palette-border, var(--border-color)),
-              0 4px 16px rgba(0, 0, 0, 0.5);
+  box-shadow:
+    0 0 0 1px var(--command-palette-border, var(--border-color)),
+    0 4px 16px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   animation: slideDown 0.15s ease-out;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
 @keyframes slideDown {
@@ -64,7 +67,9 @@
   border: none;
   outline: none;
   color: var(--text-color);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   font-size: 14px;
   line-height: 1.4;
 }
@@ -115,7 +120,10 @@
 
 .item:hover,
 .item.selected {
-  background: var(--command-palette-active, var(--hover-bg, rgba(255, 255, 255, 0.1)));
+  background: var(
+    --command-palette-active,
+    var(--hover-bg, rgba(255, 255, 255, 0.1))
+  );
 }
 
 .itemIcon {
@@ -164,7 +172,9 @@
   border: 1px solid var(--key-border, rgba(255, 255, 255, 0.2));
   border-radius: 3px;
   font-size: 11px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   color: var(--text-color-muted, #6e7681);
   min-width: 20px;
 }

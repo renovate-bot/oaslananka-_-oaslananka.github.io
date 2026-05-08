@@ -1,111 +1,121 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import { VscTerminal, VscClose } from 'react-icons/vsc';
+import { useState, useRef, useEffect } from "react";
+import { VscTerminal, VscClose } from "react-icons/vsc";
 
-import { projects } from '@/data/projects';
-import { publicContactItems, siteConfig } from '@/data/site';
-import { explorerItems } from '@/data/workspace';
-import { THEME_KEYS } from '@/lib/themes';
-import styles from '@/styles/Terminal.module.css';
+import { projects } from "@/data/projects";
+import { publicContactItems, siteConfig } from "@/data/site";
+import { explorerItems } from "@/data/workspace";
+import { THEME_KEYS } from "@/lib/themes";
+import styles from "@/styles/Terminal.module.css";
 
 interface TerminalLine {
-  type: 'input' | 'output' | 'error';
+  type: "input" | "output" | "error";
   content: string;
 }
 
 const commands: Record<string, () => string[]> = {
   help: () => [
-    'Available commands:',
-    '  help      - Show this help message',
-    '  about     - About me',
-    '  skills    - My technical skills',
-    '  projects  - View my projects',
-    '  contact   - Contact information',
-    '  theme     - Change theme (usage: theme <name>)',
-    '  themes    - List available themes',
-    '  clear     - Clear terminal',
-    '  date      - Show current date',
-    '  whoami    - Who am I?',
-    '  ls        - List directory contents',
-    '  pwd       - Print working directory',
-    '  echo      - Echo text (usage: echo <text>)',
+    "Available commands:",
+    "  help      - Show this help message",
+    "  about     - About me",
+    "  skills    - My technical skills",
+    "  projects  - View my projects",
+    "  contact   - Contact information",
+    "  theme     - Change theme (usage: theme <name>)",
+    "  themes    - List available themes",
+    "  clear     - Clear terminal",
+    "  date      - Show current date",
+    "  whoami    - Who am I?",
+    "  ls        - List directory contents",
+    "  pwd       - Print working directory",
+    "  echo      - Echo text (usage: echo <text>)",
   ],
   about: () => [...siteConfig.terminal.about],
-  skills: () => [
-    'Technical Skills:',
-    ...siteConfig.terminal.skillLines,
-  ],
+  skills: () => ["Technical Skills:", ...siteConfig.terminal.skillLines],
   projects: () => [
-    'Featured Projects:',
-    ...projects.slice(0, 3).map(
-      (project, index) => `  ${index + 1}. ${project.slug} - ${project.title}`
-    ),
-    '',
-    'Visit the Projects tab for more details.',
+    "Featured Projects:",
+    ...projects
+      .slice(0, 3)
+      .map(
+        (project, index) => `  ${index + 1}. ${project.slug} - ${project.title}`
+      ),
+    "",
+    "Visit the Projects tab for more details.",
   ],
   contact: () => [
-    'Contact Information:',
+    "Contact Information:",
     ...publicContactItems.map(
-      (item) => `  ${item.social.padEnd(11, ' ')} ${item.link}`
+      (item) => `  ${item.social.padEnd(11, " ")} ${item.link}`
     ),
   ],
   themes: () => [
-    'Available themes:',
-    ...THEME_KEYS.map((theme, i) => `  ${theme}${i === 0 ? '  (default)' : ''}`),
-    '',
+    "Available themes:",
+    ...THEME_KEYS.map(
+      (theme, i) => `  ${theme}${i === 0 ? "  (default)" : ""}`
+    ),
+    "",
     'Use "theme <name>" to change theme.',
   ],
   date: () => [new Date().toString()],
-  whoami: () => ['visitor@portfolio ~ exploring awesome projects'],
-  ls: () => [...explorerItems.map((item) => item.filename), 'README.md'],
-  pwd: () => ['/workspace/edge-systems'],
+  whoami: () => ["visitor@portfolio ~ exploring awesome projects"],
+  ls: () => [...explorerItems.map((item) => item.filename), "README.md"],
+  pwd: () => ["/workspace/edge-systems"],
 };
 
 const processCommand = (input: string): TerminalLine[] => {
   const trimmed = input.trim();
-  const lines: TerminalLine[] = [{ type: 'input', content: `$ ${trimmed}` }];
+  const lines: TerminalLine[] = [{ type: "input", content: `$ ${trimmed}` }];
 
   if (!trimmed) {
     return lines;
   }
 
-  const parts = trimmed.split(' ');
+  const parts = trimmed.split(" ");
   const cmd = parts[0].toLowerCase();
   const args = parts.slice(1);
 
-  if (cmd === 'clear') {
+  if (cmd === "clear") {
     return [];
   }
 
-  if (cmd === 'theme' && args[0]) {
+  if (cmd === "theme" && args[0]) {
     if ((THEME_KEYS as string[]).includes(args[0])) {
-      document.documentElement.setAttribute('data-theme', args[0]);
-      localStorage.setItem('theme', args[0]);
-      lines.push({ type: 'output', content: `Theme changed to ${args[0]}` });
+      document.documentElement.setAttribute("data-theme", args[0]);
+      localStorage.setItem("theme", args[0]);
+      lines.push({ type: "output", content: `Theme changed to ${args[0]}` });
     } else {
-      lines.push({ type: 'error', content: `Unknown theme: ${args[0]}. Type "themes" for available options.` });
+      lines.push({
+        type: "error",
+        content: `Unknown theme: ${args[0]}. Type "themes" for available options.`,
+      });
     }
     return lines;
   }
 
-  if (cmd === 'theme') {
-    lines.push({ type: 'error', content: 'Usage: theme <name>. Type "themes" for available options.' });
+  if (cmd === "theme") {
+    lines.push({
+      type: "error",
+      content: 'Usage: theme <name>. Type "themes" for available options.',
+    });
     return lines;
   }
 
-  if (cmd === 'echo') {
-    lines.push({ type: 'output', content: args.join(' ') });
+  if (cmd === "echo") {
+    lines.push({ type: "output", content: args.join(" ") });
     return lines;
   }
 
   if (commands[cmd]) {
     const output = commands[cmd]();
-    output.forEach(line => {
-      lines.push({ type: 'output', content: line });
+    output.forEach((line) => {
+      lines.push({ type: "output", content: line });
     });
   } else {
-    lines.push({ type: 'error', content: `Command not found: ${cmd}. Type "help" for available commands.` });
+    lines.push({
+      type: "error",
+      content: `Command not found: ${cmd}. Type "help" for available commands.`,
+    });
   }
 
   return lines;
@@ -117,11 +127,11 @@ interface TerminalProps {
 
 const Terminal = ({ onToggle }: TerminalProps) => {
   const [lines, setLines] = useState<TerminalLine[]>([
-    { type: 'output', content: 'Welcome to the interactive terminal!' },
-    { type: 'output', content: 'Type "help" for available commands.' },
-    { type: 'output', content: '' },
+    { type: "output", content: "Welcome to the interactive terminal!" },
+    { type: "output", content: 'Type "help" for available commands.' },
+    { type: "output", content: "" },
   ]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -143,37 +153,40 @@ const Terminal = ({ onToggle }: TerminalProps) => {
     e.preventDefault();
     const trimmed = input.trim();
 
-    if (trimmed === 'clear') {
+    if (trimmed === "clear") {
       setLines([]);
     } else {
       const newLines = processCommand(input);
-      setLines(prev => [...prev, ...newLines]);
+      setLines((prev) => [...prev, ...newLines]);
     }
 
     if (trimmed) {
-      setCommandHistory(prev => [...prev, trimmed]);
+      setCommandHistory((prev) => [...prev, trimmed]);
     }
     setHistoryIndex(-1);
-    setInput('');
+    setInput("");
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'ArrowUp') {
+    if (e.key === "ArrowUp") {
       e.preventDefault();
       if (commandHistory.length > 0) {
-        const newIndex = historyIndex < commandHistory.length - 1 ? historyIndex + 1 : historyIndex;
+        const newIndex =
+          historyIndex < commandHistory.length - 1
+            ? historyIndex + 1
+            : historyIndex;
         setHistoryIndex(newIndex);
-        setInput(commandHistory[commandHistory.length - 1 - newIndex] || '');
+        setInput(commandHistory[commandHistory.length - 1 - newIndex] || "");
       }
-    } else if (e.key === 'ArrowDown') {
+    } else if (e.key === "ArrowDown") {
       e.preventDefault();
       if (historyIndex > 0) {
         const newIndex = historyIndex - 1;
         setHistoryIndex(newIndex);
-        setInput(commandHistory[commandHistory.length - 1 - newIndex] || '');
+        setInput(commandHistory[commandHistory.length - 1 - newIndex] || "");
       } else if (historyIndex === 0) {
         setHistoryIndex(-1);
-        setInput('');
+        setInput("");
       }
     }
   };
@@ -197,12 +210,20 @@ const Terminal = ({ onToggle }: TerminalProps) => {
           </button>
         </div>
       </div>
-      <div className={styles.body} ref={terminalRef} onClick={handleTerminalClick}>
+      <div
+        className={styles.body}
+        ref={terminalRef}
+        onClick={handleTerminalClick}
+      >
         {lines.map((line, index) => (
           <div
             key={index}
             className={`${styles.line} ${
-              line.type === 'error' ? styles.error : line.type === 'input' ? styles.input : ''
+              line.type === "error"
+                ? styles.error
+                : line.type === "input"
+                  ? styles.input
+                  : ""
             }`}
           >
             {line.content}
@@ -214,7 +235,7 @@ const Terminal = ({ onToggle }: TerminalProps) => {
             ref={inputRef}
             type="text"
             value={input}
-            onChange={e => setInput(e.target.value)}
+            onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             className={styles.input}
             autoComplete="off"

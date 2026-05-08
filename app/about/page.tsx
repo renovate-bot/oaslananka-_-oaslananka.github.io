@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { VscGithub, VscMail, VscLinkExternal } from 'react-icons/vsc';
-import Link from 'next/link';
+import { VscGithub, VscMail, VscLinkExternal } from "react-icons/vsc";
+import Link from "next/link";
 
-import { siteConfig } from '@/data/site';
-import styles from '@/styles/AboutPage.module.css';
+import { siteConfig } from "@/data/site";
+import styles from "@/styles/AboutPage.module.css";
 
 const AboutPage = () => {
   const { owner, about, links } = siteConfig;
@@ -24,11 +24,11 @@ const AboutPage = () => {
               </div>
             </div>
           </div>
-          
+
           <div className={styles.headerActions}>
-            <a 
+            <a
               href={links.githubProfile}
-              target="_blank" 
+              target="_blank"
               rel="noopener noreferrer"
               className={styles.iconButton}
             >
@@ -47,7 +47,7 @@ const AboutPage = () => {
               <span className={styles.sectionNumber}>01</span>
               <h2 className={styles.sectionTitle}>About</h2>
             </div>
-            
+
             <div className={styles.sectionBody}>
               {about.intro.map((paragraph) => (
                 <p className={styles.paragraph} key={paragraph}>
@@ -63,7 +63,7 @@ const AboutPage = () => {
               <span className={styles.sectionNumber}>02</span>
               <h2 className={styles.sectionTitle}>Experience</h2>
             </div>
-            
+
             <div className={styles.sectionBody}>
               {about.experiences.map((experience) => (
                 <div
@@ -71,7 +71,9 @@ const AboutPage = () => {
                   key={`${experience.period}-${experience.role}`}
                 >
                   <div className={styles.expMeta}>
-                    <span className={styles.expPeriod}>{experience.period}</span>
+                    <span className={styles.expPeriod}>
+                      {experience.period}
+                    </span>
                   </div>
                   <h3 className={styles.expRole}>{experience.role}</h3>
                   {experience.company && (
@@ -98,7 +100,7 @@ const AboutPage = () => {
               <span className={styles.sectionNumber}>03</span>
               <h2 className={styles.sectionTitle}>Skills</h2>
             </div>
-            
+
             <div className={styles.sectionBody}>
               <div className={styles.skillsGrid}>
                 {about.skills.map((skillCategory) => (
@@ -126,16 +128,16 @@ const AboutPage = () => {
                 <span className={styles.sectionNumber}>04</span>
                 <h2 className={styles.sectionTitle}>Writing</h2>
               </div>
-              
+
               <div className={styles.sectionBody}>
                 <p className={styles.paragraph}>{about.writingIntro}</p>
-                
+
                 <div className={styles.writingLinks}>
                   {about.writingLinks.map((writingLink) => (
-                    <a 
+                    <a
                       key={writingLink.href}
                       href={writingLink.href}
-                      target="_blank" 
+                      target="_blank"
                       rel="noopener noreferrer"
                       className={styles.writingLink}
                     >
@@ -152,26 +154,22 @@ const AboutPage = () => {
           <section className={styles.section}>
             <div className={styles.sectionHeader}>
               <span className={styles.sectionNumber}>
-                {about.writingLinks.length > 0 ? '05' : '04'}
+                {about.writingLinks.length > 0 ? "05" : "04"}
               </span>
               <h2 className={styles.sectionTitle}>Beyond Code</h2>
             </div>
-            
+
             <div className={styles.sectionBody}>
-              <p className={styles.paragraph}>
-                {about.beyondCode}
-              </p>
+              <p className={styles.paragraph}>{about.beyondCode}</p>
             </div>
           </section>
 
           <section className={styles.section}>
             <div className={styles.sectionHeader}>
               <span className={styles.sectionNumber}>
-                {about.writingLinks.length > 0 ? '06' : '05'}
+                {about.writingLinks.length > 0 ? "06" : "05"}
               </span>
-              <h2 className={styles.sectionTitle}>
-                {about.attribution.title}
-              </h2>
+              <h2 className={styles.sectionTitle}>{about.attribution.title}</h2>
             </div>
 
             <div className={styles.sectionBody}>

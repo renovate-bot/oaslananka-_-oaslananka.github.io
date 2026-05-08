@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { VscCheck } from 'react-icons/vsc';
+import Image from "next/image";
+import { VscCheck } from "react-icons/vsc";
 
-import styles from '@/styles/ThemeInfo.module.css';
+import styles from "@/styles/ThemeInfo.module.css";
 
 interface ThemeInfoProps {
   icon: string;
@@ -14,10 +14,17 @@ interface ThemeInfoProps {
   onSelect: (theme: string) => void;
 }
 
-const ThemeInfo = ({ icon, name, publisher, theme, isActive, onSelect }: ThemeInfoProps) => {
+const ThemeInfo = ({
+  icon,
+  name,
+  publisher,
+  theme,
+  isActive,
+  onSelect,
+}: ThemeInfoProps) => {
   return (
-    <button 
-      className={`${styles.card} ${isActive ? styles.active : ''}`}
+    <button
+      className={`${styles.card} ${isActive ? styles.active : ""}`}
       onClick={() => onSelect(theme)}
     >
       <div className={styles.preview}>
@@ -34,7 +41,7 @@ const ThemeInfo = ({ icon, name, publisher, theme, isActive, onSelect }: ThemeIn
           </div>
         )}
       </div>
-      
+
       <div className={styles.info}>
         <h3 className={styles.name}>{name}</h3>
         <p className={styles.publisher}>{publisher}</p>

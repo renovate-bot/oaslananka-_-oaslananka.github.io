@@ -1,4 +1,5 @@
 # oaslananka.github.io
+
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/oaslananka/oaslananka.github.io)
 
 VS Code inspired developer portfolio built with Next.js 16 and deployed from a

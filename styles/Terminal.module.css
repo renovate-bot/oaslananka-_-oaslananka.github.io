@@ -5,7 +5,7 @@
   min-height: 150px;
   background: var(--terminal-bg, var(--main-bg));
   border-top: 1px solid var(--terminal-border, var(--bottombar-border));
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .header {

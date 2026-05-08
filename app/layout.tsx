@@ -1,12 +1,12 @@
-import type { Metadata } from 'next';
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
-import Layout from '@/components/Layout';
-import { siteConfig } from '@/data/site';
+import Layout from "@/components/Layout";
+import { siteConfig } from "@/data/site";
 
-import '@/styles/globals.css';
-import '@/styles/themes.css';
+import "@/styles/globals.css";
+import "@/styles/themes.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.links.primaryDomain),
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     url: siteConfig.seo.url,
   },
   twitter: {
-    card: 'summary_large_image',
+    card: "summary_large_image",
   },
 };
 

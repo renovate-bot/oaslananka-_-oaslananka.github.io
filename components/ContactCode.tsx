@@ -1,5 +1,5 @@
-import styles from '@/styles/ContactCode.module.css';
-import { publicContactItems } from '@/data/site';
+import styles from "@/styles/ContactCode.module.css";
+import { publicContactItems } from "@/data/site";
 
 const ContactCode = () => {
   return (
@@ -9,7 +9,7 @@ const ContactCode = () => {
       </p>
       {publicContactItems.map((item) => (
         <p className={styles.line} key={item.href}>
-          &nbsp;&nbsp;&nbsp;{item.social}:{' '}
+          &nbsp;&nbsp;&nbsp;{item.social}:{" "}
           <a href={item.href} target="_blank" rel="noopener">
             {item.link}
           </a>

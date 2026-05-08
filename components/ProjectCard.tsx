@@ -1,9 +1,9 @@
-import Image from 'next/image';
-import { VscLinkExternal } from 'react-icons/vsc';
+import Image from "next/image";
+import { VscLinkExternal } from "react-icons/vsc";
 
-import { Project } from '@/types';
+import { Project } from "@/types";
 
-import styles from '@/styles/ProjectCard.module.css';
+import styles from "@/styles/ProjectCard.module.css";
 
 interface ProjectCardProps {
   project: Project;
@@ -19,9 +19,9 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
       className={styles.card}
     >
       <div className={styles.number}>
-        <span>{String(index).padStart(2, '0')}</span>
+        <span>{String(index).padStart(2, "0")}</span>
       </div>
-      
+
       <div className={styles.content}>
         <div className={styles.main}>
           <div className={styles.header}>
@@ -36,7 +36,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
             </div>
             <h3 className={styles.title}>{project.title}</h3>
           </div>
-          
+
           <p className={styles.description}>{project.description}</p>
         </div>
 

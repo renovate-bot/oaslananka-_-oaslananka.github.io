@@ -1,14 +1,14 @@
-import { Metadata } from 'next';
-import { VscFolderOpened, VscGithub, VscLinkExternal } from 'react-icons/vsc';
+import { Metadata } from "next";
+import { VscFolderOpened, VscGithub, VscLinkExternal } from "react-icons/vsc";
 
-import ProjectCard from '@/components/ProjectCard';
-import { projects } from '@/data/projects';
-import { siteConfig } from '@/data/site';
+import ProjectCard from "@/components/ProjectCard";
+import { projects } from "@/data/projects";
+import { siteConfig } from "@/data/site";
 
-import styles from '@/styles/ProjectsPage.module.css';
+import styles from "@/styles/ProjectsPage.module.css";
 
 export const metadata: Metadata = {
-  title: 'Projects',
+  title: "Projects",
 };
 
 const ProjectsPage = () => {
@@ -26,7 +26,7 @@ const ProjectsPage = () => {
               <span className={styles.count}>{totalProjects} Links</span>
             </div>
           </div>
-          
+
           <div className={styles.headerContent}>
             <h1 className={styles.title}>GitHub Access</h1>
             <p className={styles.subtitle}>
@@ -39,8 +39,8 @@ const ProjectsPage = () => {
 
         <div className={styles.timeline}>
           {projects.map((project, index) => (
-            <ProjectCard 
-              key={project.slug} 
+            <ProjectCard
+              key={project.slug}
               project={project}
               index={index + 1}
             />
@@ -49,7 +49,7 @@ const ProjectsPage = () => {
 
         <footer className={styles.footer}>
           <div className={styles.footerLine} />
-          <a 
+          <a
             href={siteConfig.links.githubRepositories}
             target="_blank"
             rel="noopener noreferrer"
