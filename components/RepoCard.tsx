@@ -40,7 +40,11 @@ const RepoCard = ({ repo }: RepoCardProps) => {
     >
       <div className={styles.cardHeader}>
         <h3 className={styles.title}>{repo.name}</h3>
-        <VscLinkExternal className={styles.externalIcon} size={14} />
+        <VscLinkExternal
+          className={styles.externalIcon}
+          size={14}
+          aria-hidden="true"
+        />
       </div>
 
       <p className={styles.description}>
@@ -60,12 +64,12 @@ const RepoCard = ({ repo }: RepoCardProps) => {
           )}
 
           <div className={styles.stat}>
-            <VscStarEmpty size={12} />
+            <VscStarEmpty size={12} aria-hidden="true" />
             <span>{repo.stargazers_count}</span>
           </div>
 
           <div className={styles.stat}>
-            <VscRepoForked size={12} />
+            <VscRepoForked size={12} aria-hidden="true" />
             <span>{repo.forks}</span>
           </div>
         </div>

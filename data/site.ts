@@ -10,6 +10,7 @@ const githubRepo =
   process.env.NEXT_PUBLIC_GITHUB_REPO ||
   `${githubUsername}/oaslananka.github.io`;
 const primaryDomain = "https://oaslananka.dev";
+const githubApiVersion = "2022-11-28";
 
 const contactItems: ContactItem[] = [
   {
@@ -48,6 +49,10 @@ const skillCategories: SkillCategory[] = [
     items: ["FastAPI", "Node.js", "WebSockets", "PostgreSQL"],
   },
   {
+    title: "Security Engineering",
+    items: ["Threat Modeling", "Secure APIs", "CI/CD Security", "SBOM"],
+  },
+  {
     title: "Systems & Ops",
     items: ["Docker", "Linux", "Observability", "Device-to-Cloud"],
   },
@@ -68,6 +73,15 @@ const experiences: ExperienceItem[] = [
     role: "Ownership in remote and async teams",
     description:
       "I work well in remote, async environments and I am comfortable owning problems end to end.",
+  },
+  {
+    period: "Methodology",
+    role: "Secure, reproducible engineering",
+    bullets: [
+      "Designing with threat models, dependency hygiene, and production observability in mind",
+      "Keeping public work reproducible with typed code, CI gates, release automation, SBOMs, and provenance",
+      "Documenting responsible disclosure paths and maintaining clean operational boundaries",
+    ],
   },
 ];
 
@@ -99,7 +113,7 @@ export const siteConfig = {
     defaultTitle: "Osman ASLAN | Portfolio",
     titleTemplate: "Osman ASLAN | %s",
     description:
-      "Osman ASLAN portfolio built with a VS Code inspired interface and focused on software projects, engineering workflows, and clean UI.",
+      "Osman ASLAN portfolio built with a VS Code inspired interface and focused on secure edge systems, engineering workflows, software projects, and clean UI.",
     keywords: [
       "osman aslan",
       "oaslananka",
@@ -108,7 +122,7 @@ export const siteConfig = {
       "embedded systems",
       "next.js portfolio",
     ],
-    image: "https://imgur.com/4zi5KkQ.png",
+    image: "/opengraph-image",
     url: primaryDomain,
   },
   links: {
@@ -121,6 +135,8 @@ export const siteConfig = {
   github: {
     username: githubUsername,
     repo: githubRepo,
+    apiVersion: githubApiVersion,
+    userAgent: "oaslananka.github.io",
   },
   home: {
     greeting: "Hello, I'm",

@@ -1,10 +1,15 @@
-"use client";
-
+import type { Metadata } from "next";
 import { VscGithub, VscMail, VscLinkExternal } from "react-icons/vsc";
 import Link from "next/link";
 
 import { siteConfig } from "@/data/site";
+import { createPageMetadata } from "@/lib/metadata";
 import styles from "@/styles/AboutPage.module.css";
+
+export const metadata: Metadata = createPageMetadata({
+  title: "About",
+  path: "/about",
+});
 
 const AboutPage = () => {
   const { owner, about, links } = siteConfig;
@@ -31,11 +36,16 @@ const AboutPage = () => {
               target="_blank"
               rel="noopener noreferrer"
               className={styles.iconButton}
+              aria-label="GitHub profile"
             >
-              <VscGithub size={20} />
+              <VscGithub size={20} aria-hidden="true" />
             </a>
-            <Link href="/contact" className={styles.iconButton}>
-              <VscMail size={20} />
+            <Link
+              href="/contact"
+              className={styles.iconButton}
+              aria-label="Contact"
+            >
+              <VscMail size={20} aria-hidden="true" />
             </Link>
           </div>
         </header>
@@ -142,7 +152,7 @@ const AboutPage = () => {
                       className={styles.writingLink}
                     >
                       <span>{writingLink.label}</span>
-                      <VscLinkExternal size={14} />
+                      <VscLinkExternal size={14} aria-hidden="true" />
                     </a>
                   ))}
                 </div>
@@ -185,7 +195,7 @@ const AboutPage = () => {
                     className={styles.creditLink}
                   >
                     <span>{about.attribution.creatorLabel}</span>
-                    <VscLinkExternal size={14} />
+                    <VscLinkExternal size={14} aria-hidden="true" />
                   </a>
                   <a
                     href={about.attribution.projectUrl}
@@ -194,7 +204,7 @@ const AboutPage = () => {
                     className={styles.creditLink}
                   >
                     <span>{about.attribution.projectLabel}</span>
-                    <VscLinkExternal size={14} />
+                    <VscLinkExternal size={14} aria-hidden="true" />
                   </a>
                 </div>
               </div>

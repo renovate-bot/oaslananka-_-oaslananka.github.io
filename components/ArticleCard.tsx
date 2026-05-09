@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { VscEye, VscHeart, VscComment } from "react-icons/vsc";
+import { VscHeart, VscComment } from "react-icons/vsc";
 
 import { Article } from "@/types";
 
@@ -41,17 +41,12 @@ const ArticleCard = ({ article, index }: ArticleCardProps) => {
         <div className={styles.footer}>
           <div className={styles.stats}>
             <div className={styles.stat}>
-              <VscEye size={13} />
-              <span>{article.page_views_count.toLocaleString()}</span>
-            </div>
-
-            <div className={styles.stat}>
-              <VscHeart size={13} />
+              <VscHeart size={13} aria-hidden="true" />
               <span>{article.public_reactions_count}</span>
             </div>
 
             <div className={styles.stat}>
-              <VscComment size={13} />
+              <VscComment size={13} aria-hidden="true" />
               <span>{article.comments_count}</span>
             </div>
           </div>

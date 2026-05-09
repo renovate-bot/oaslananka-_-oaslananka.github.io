@@ -16,7 +16,9 @@ This is a personal portfolio. Contributions are welcome for:
 ```bash
 git clone https://github.com/oaslananka/oaslananka.github.io.git
 cd oaslananka.github.io
-pnpm install
+corepack enable
+corepack prepare pnpm@11.0.8 --activate
+pnpm install --frozen-lockfile
 pnpm dev
 ```
 
@@ -24,11 +26,14 @@ pnpm dev
 
 ```bash
 pnpm run lint
+pnpm run test
+pnpm run test:e2e
+pnpm run test:a11y
 pnpm run typecheck
 pnpm run build
 ```
 
-All three must pass without errors.
+All checks must pass without errors.
 
 ## Commit Convention
 

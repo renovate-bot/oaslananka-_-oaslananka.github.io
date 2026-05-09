@@ -104,6 +104,31 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm audit --audit-level=high --prod
 
+  osv-scanner:
+    name: OSV Scanner
+    if: github.repository == 'oaslananka-lab/oaslananka.github.io'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+
+      - name: Scan lockfile with OSV
+        run: |
+          set -euo pipefail
+          version="2.3.8"
+          base_url="https://github.com/google/osv-scanner/releases/download/v${version}"
+          binary="osv-scanner_linux_amd64"
+          checksums="osv-scanner_SHA256SUMS"
+          curl -sSfLO "${base_url}/${binary}"
+          curl -sSfLO "${base_url}/${checksums}"
+          grep " ${binary}$" "${checksums}" | sha256sum --check -
+          chmod +x "${binary}"
+          ./"${binary}" --lockfile=pnpm-lock.yaml
+
   scorecard:
     name: OSSF Scorecard
     if: >-
@@ -124,7 +149,7 @@ jobs:
         with:
           results_file: scorecard-results.sarif
           results_format: sarif
-          publish_results: true
+          publish_results: false
 
       - uses: github/codeql-action/upload-sarif@68bde559dea0fdcac2102bfdf6230c5f70eb485e
         with:

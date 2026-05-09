@@ -13,41 +13,42 @@ const Sidebar = () => {
     <aside className={styles.sidebar}>
       <div className={styles.sidebarTop}>
         {sidebarTopItems.map(({ sidebarIcon: Icon, path, label }) => (
-          <Link href={path} key={path}>
-            <div
-              className={`${styles.iconContainer} ${
-                pathname === path && styles.active
-              }`}
-              title={label}
-            >
-              <Icon
-                size={16}
-                color={
-                  pathname === path
-                    ? "rgb(225, 228, 232)"
-                    : "rgb(106, 115, 125)"
-                }
-                className={styles.icon}
-              />
-            </div>
+          <Link
+            href={path}
+            key={path}
+            className={`${styles.iconContainer} ${
+              pathname === path && styles.active
+            }`}
+            title={label}
+            aria-label={label}
+          >
+            <Icon
+              size={16}
+              color={
+                pathname === path ? "rgb(225, 228, 232)" : "rgb(106, 115, 125)"
+              }
+              className={styles.icon}
+            />
           </Link>
         ))}
       </div>
       <div className={styles.sidebarBottom}>
         {sidebarBottomItems.map(({ sidebarIcon: Icon, path, label }) => (
-          <div className={styles.iconContainer} key={path} title={label}>
-            <Link href={path}>
-              <Icon
-                size={16}
-                color={
-                  pathname === path
-                    ? "rgb(225, 228, 232)"
-                    : "rgb(106, 115, 125)"
-                }
-                className={styles.icon}
-              />
-            </Link>
-          </div>
+          <Link
+            className={styles.iconContainer}
+            key={path}
+            title={label}
+            href={path}
+            aria-label={label}
+          >
+            <Icon
+              size={16}
+              color={
+                pathname === path ? "rgb(225, 228, 232)" : "rgb(106, 115, 125)"
+              }
+              className={styles.icon}
+            />
+          </Link>
         ))}
       </div>
     </aside>

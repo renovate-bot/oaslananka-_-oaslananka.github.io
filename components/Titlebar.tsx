@@ -28,13 +28,14 @@ const Titlebar = ({ onOpenCommandPalette }: TitlebarProps) => {
       <div className={styles.items}>
         <p>File</p>
         <p>Edit</p>
-        <p
+        <button
           onClick={handleViewClick}
-          className={styles.menuItem}
+          className={styles.menuButton}
           title="Open Command Palette (Ctrl+Shift+P)"
+          type="button"
         >
           View
-        </p>
+        </button>
         <p>Go</p>
         <p>Run</p>
         <p>Terminal</p>
@@ -43,7 +44,7 @@ const Titlebar = ({ onOpenCommandPalette }: TitlebarProps) => {
       <p className={styles.title}>
         {siteConfig.owner.name} - Edge Systems Workspace
       </p>
-      <div className={styles.windowButtons}>
+      <div className={styles.windowButtons} aria-hidden="true">
         <span className={styles.minimize}></span>
         <span className={styles.maximize}></span>
         <span className={styles.close}></span>

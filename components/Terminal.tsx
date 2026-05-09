@@ -201,12 +201,18 @@ const Terminal = ({ onToggle }: TerminalProps) => {
     <div className={styles.terminal}>
       <div className={styles.header}>
         <div className={styles.headerLeft}>
-          <VscTerminal className={styles.terminalIcon} />
+          <VscTerminal className={styles.terminalIcon} aria-hidden="true" />
           <span>Terminal</span>
         </div>
         <div className={styles.headerRight}>
-          <button onClick={onToggle} className={styles.headerBtn} title="Close">
-            <VscClose size={14} />
+          <button
+            onClick={onToggle}
+            className={styles.headerBtn}
+            title="Close"
+            aria-label="Close terminal"
+            type="button"
+          >
+            <VscClose size={14} aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -240,6 +246,7 @@ const Terminal = ({ onToggle }: TerminalProps) => {
             className={styles.input}
             autoComplete="off"
             spellCheck={false}
+            aria-label="Terminal command"
           />
         </form>
       </div>

@@ -111,19 +111,28 @@
 
 .item {
   display: flex;
+  width: 100%;
   align-items: center;
   padding: 8px 16px;
   gap: 12px;
   cursor: pointer;
   transition: background-color 0.1s;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
 }
 
 .item:hover,
-.item.selected {
+.item.selected,
+.item:focus-visible {
   background: var(
     --command-palette-active,
     var(--hover-bg, rgba(255, 255, 255, 0.1))
   );
+  outline: 1px solid var(--accent-color);
+  outline-offset: -1px;
 }
 
 .itemIcon {

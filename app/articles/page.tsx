@@ -4,44 +4,22 @@ import { VscBook, VscLinkExternal, VscGlobe } from "react-icons/vsc";
 import ArticleCard from "@/components/ArticleCard";
 
 import { siteConfig } from "@/data/site";
-import { Article } from "@/types";
+import { getArticles } from "@/lib/articles";
+import { createPageMetadata } from "@/lib/metadata";
 
 import styles from "@/styles/ArticlesPage.module.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Articles",
-};
+  path: "/articles",
+});
 
-export const revalidate = 60;
-
-async function getArticles(): Promise<Article[]> {
-  const apiKey = process.env.DEV_TO_API_KEY;
-
-  if (!apiKey) {
-    return [];
-  }
-
-  const res = await fetch(
-    "https://dev.to/api/articles/me/published?per_page=6",
-    {
-      headers: {
-        "api-key": apiKey,
-      },
-    }
-  );
-
-  if (!res.ok) {
-    console.error(`Failed to fetch articles: ${res.status} ${res.statusText}`);
-    return [];
-  }
-
-  return res.json();
-}
+export const revalidate = 3600;
 
 export default async function ArticlesPage() {
   const articles = await getArticles();
-  const totalViews = articles.reduce(
-    (sum, article) => sum + article.page_views_count,
+  const totalReactions = articles.reduce(
+    (sum, article) => sum + article.public_reactions_count,
     0
   );
 
@@ -51,7 +29,7 @@ export default async function ArticlesPage() {
         <header className={styles.header}>
           <div className={styles.headerMain}>
             <div className={styles.iconWrapper}>
-              <VscBook className={styles.icon} size={24} />
+              <VscBook className={styles.icon} size={24} aria-hidden="true" />
             </div>
 
             <div className={styles.headerContent}>
@@ -59,12 +37,12 @@ export default async function ArticlesPage() {
                 <h1 className={styles.title}>Articles</h1>
                 <div className={styles.stats}>
                   <div className={styles.stat}>
-                    <VscGlobe size={14} />
+                    <VscGlobe size={14} aria-hidden="true" />
                     <span>{articles.length} posts</span>
                   </div>
                   <div className={styles.divider} />
                   <div className={styles.stat}>
-                    <span>{totalViews.toLocaleString()} views</span>
+                    <span>{totalReactions.toLocaleString()} reactions</span>
                   </div>
                 </div>
               </div>
@@ -83,7 +61,7 @@ export default async function ArticlesPage() {
             className={styles.profileLink}
           >
             <span>DEV.to</span>
-            <VscLinkExternal size={14} />
+            <VscLinkExternal size={14} aria-hidden="true" />
           </a>
         </header>
 
@@ -98,8 +76,8 @@ export default async function ArticlesPage() {
             ))
           ) : (
             <p className={styles.subtitle}>
-              No DEV.to posts are connected yet. Add a valid `DEV_TO_API_KEY` to
-              publish articles here.
+              No published articles are available right now. New technical notes
+              will appear here as they are published.
             </p>
           )}
         </div>

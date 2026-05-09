@@ -4,12 +4,14 @@ import { VscFolderOpened, VscGithub, VscLinkExternal } from "react-icons/vsc";
 import ProjectCard from "@/components/ProjectCard";
 import { projects } from "@/data/projects";
 import { siteConfig } from "@/data/site";
+import { createPageMetadata } from "@/lib/metadata";
 
 import styles from "@/styles/ProjectsPage.module.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Projects",
-};
+  path: "/projects",
+});
 
 const ProjectsPage = () => {
   const totalProjects = projects.length;
@@ -20,7 +22,11 @@ const ProjectsPage = () => {
         <header className={styles.header}>
           <div className={styles.headerTop}>
             <div className={styles.iconWrapper}>
-              <VscFolderOpened className={styles.icon} size={24} />
+              <VscFolderOpened
+                className={styles.icon}
+                size={24}
+                aria-hidden="true"
+              />
             </div>
             <div className={styles.meta}>
               <span className={styles.count}>{totalProjects} Links</span>
@@ -55,9 +61,9 @@ const ProjectsPage = () => {
             rel="noopener noreferrer"
             className={styles.footerLink}
           >
-            <VscGithub size={18} />
+            <VscGithub size={18} aria-hidden="true" />
             <span>Explore more on GitHub</span>
-            <VscLinkExternal size={14} />
+            <VscLinkExternal size={14} aria-hidden="true" />
           </a>
         </footer>
       </div>

@@ -39,15 +39,66 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
-  notify-deploy:
-    name: Post-release summary
+  build-release-assets:
+    name: Build release assets
     needs: release-please
     if: needs.release-please.outputs.release_created == 'true'
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 30
     permissions:
-      contents: read
+      contents: write
+      attestations: write
+      id-token: write
     steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@8912a9102ac27614460f54aedde9e1e7f9aec20d
+        with:
+          version: 11.0.8
+
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+
+      - name: Generate SBOM and checksums
+        env:
+          RELEASE_PLEASE_VERSION: ${{ needs.release-please.outputs.version }}
+        run: |
+          set -euo pipefail
+          mkdir -p release-assets
+          tar \
+            --exclude='.next/cache' \
+            -czf "release-assets/oaslananka.github.io-${RELEASE_PLEASE_VERSION}.tar.gz" \
+            .next public docs package.json pnpm-lock.yaml next.config.ts
+          node scripts/generate-sbom.mjs "release-assets/sbom-${RELEASE_PLEASE_VERSION}.cdx.json"
+          (
+            cd release-assets
+            sha256sum * > "checksums-${RELEASE_PLEASE_VERSION}.txt"
+          )
+
+      - uses: actions/attest-build-provenance@43d14bc2b83dec42d39ecae14e916627a18bb661
+        with:
+          subject-checksums: release-assets/checksums-${{ needs.release-please.outputs.version }}.txt
+
+      - name: Attach release assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_PLEASE_TAG: ${{ needs.release-please.outputs.tag_name }}
+        run: |
+          set -euo pipefail
+          gh release upload "${RELEASE_PLEASE_TAG}" release-assets/*
+
       - name: Log release info
         run: |
           set -euo pipefail

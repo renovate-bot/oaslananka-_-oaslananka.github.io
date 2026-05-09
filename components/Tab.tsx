@@ -16,11 +16,12 @@ const Tab = ({ icon, filename, path }: TabProps) => {
   const pathname = usePathname();
 
   return (
-    <Link href={path}>
-      <div className={`${styles.tab} ${pathname === path && styles.active}`}>
-        <Image src={icon} alt={filename} height={18} width={18} />
-        <p>{filename}</p>
-      </div>
+    <Link
+      href={path}
+      className={`${styles.tab} ${pathname === path && styles.active}`}
+    >
+      <Image src={icon} alt="" height={18} width={18} aria-hidden="true" />
+      <p>{filename}</p>
     </Link>
   );
 };

@@ -1,0 +1,4 @@
+Contact: mailto:info@oaslananka.dev
+Policy: https://github.com/oaslananka/oaslananka.github.io/security/policy
+Preferred-Languages: en, tr
+Canonical: https://oaslananka.dev/.well-known/security.txt

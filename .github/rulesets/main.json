@@ -31,10 +31,31 @@
         "strict_required_status_checks_policy": true,
         "required_status_checks": [
           {
-            "context": "Lint / Typecheck / Build"
+            "context": "Local quality gates"
           },
           {
             "context": "Gitleaks"
+          },
+          {
+            "context": "Trivy filesystem"
+          },
+          {
+            "context": "pnpm audit"
+          },
+          {
+            "context": "OSV Scanner"
+          },
+          {
+            "context": "OSSF Scorecard"
+          },
+          {
+            "context": "zizmor"
+          },
+          {
+            "context": "CodeQL"
+          },
+          {
+            "context": "Dependency Review"
           },
           {
             "context": "Lint commit messages"

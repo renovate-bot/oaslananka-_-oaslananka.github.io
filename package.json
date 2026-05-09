@@ -5,13 +5,22 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "analyze": "node scripts/analyze.mjs",
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --ignore-unknown --write .",
     "format:check": "prettier --ignore-unknown --check .",
     "typecheck": "tsc --noEmit",
-    "ci": "pnpm run lint && pnpm run format:check && pnpm run typecheck && pnpm run build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test --project=chromium",
+    "test:a11y": "playwright test --project=a11y",
+    "security": "node scripts/security-check.mjs",
+    "link:check": "node scripts/check-links.mjs",
+    "badge:check": "node scripts/check-badges.mjs",
+    "release:dry-run": "node scripts/release-dry-run.mjs",
+    "ci": "pnpm run format:check && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run test:e2e && pnpm run test:a11y && pnpm run security && pnpm run link:check && pnpm run badge:check && pnpm run release:dry-run && pnpm run build",
     "prepare": "husky"
   },
   "packageManager": "pnpm@11.0.8",
@@ -33,29 +42,38 @@
       "unrs-resolver"
     ],
     "overrides": {
-      "next@16.2.4>postcss": "8.5.10"
+      "next>postcss": "8.5.14"
     }
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
-    "next": "^16.2.4",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-github-calendar": "^4.5.6",
+    "next": "^16.2.6",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-github-calendar": "^5.0.6",
     "react-icons": "^5.5.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
     "@commitlint/cli": "^20.5.3",
     "@commitlint/config-conventional": "^20.5.3",
+    "@next/bundle-analyzer": "^16.2.6",
+    "@playwright/test": "^1.59.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "^24.12.3",
     "@types/react": "^19.0.11",
-    "eslint": "^9.22.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.6",
+    "happy-dom": "^20.9.0",
     "husky": "^9.1.7",
+    "linkinator": "^7.6.1",
     "lint-staged": "^17.0.2",
     "prettier": "^3.8.3",
-    "typescript": "^5.8.2",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.5",
     "yaml": "^2.8.4"
   }
 }

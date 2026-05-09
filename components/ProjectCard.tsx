@@ -43,7 +43,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         <div className={styles.action}>
           <span className={styles.link}>
             View Project
-            <VscLinkExternal size={12} />
+            <VscLinkExternal size={12} aria-hidden="true" />
           </span>
         </div>
       </div>

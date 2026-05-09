@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import Image from "next/image";
-import GitHubCalendar from "react-github-calendar";
 import {
   VscGithub,
   VscLinkExternal,
@@ -11,106 +10,19 @@ import {
 } from "react-icons/vsc";
 
 import RepoCard from "@/components/RepoCard";
+import GitHubActivity from "@/components/GitHubActivity";
 import { siteConfig } from "@/data/site";
-import { Repo, User } from "@/types";
+import { getGithubData } from "@/lib/github";
+import { createPageMetadata } from "@/lib/metadata";
 
 import styles from "@/styles/GithubPage.module.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Open Source",
-};
+  path: "/open-source",
+});
 
 export const revalidate = 600;
-const REPOS_PER_PAGE = 100;
-
-function sortReposByStars(repos: Repo[]) {
-  return [...repos].sort((a, b) => {
-    if (b.stargazers_count !== a.stargazers_count) {
-      return b.stargazers_count - a.stargazers_count;
-    }
-
-    if (b.forks !== a.forks) {
-      return b.forks - a.forks;
-    }
-
-    return b.watchers - a.watchers;
-  });
-}
-
-async function fetchGithubJson<T>(url: string, headers?: HeadersInit) {
-  const response = await fetch(url, { headers });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch GitHub data: ${response.status}`);
-  }
-
-  return response.json() as Promise<T>;
-}
-
-async function getAllRepos(username: string, headers?: HeadersInit) {
-  const allRepos: Repo[] = [];
-
-  for (let page = 1; ; page += 1) {
-    const pageRepos = await fetchGithubJson<Repo[]>(
-      `https://api.github.com/users/${username}/repos?type=owner&sort=updated&per_page=${REPOS_PER_PAGE}&page=${page}`,
-      headers
-    );
-
-    allRepos.push(...pageRepos);
-
-    if (pageRepos.length < REPOS_PER_PAGE) {
-      break;
-    }
-  }
-
-  return allRepos;
-}
-
-async function getGithubData() {
-  try {
-    const headers = process.env.GITHUB_API_KEY
-      ? {
-          Authorization: `Bearer ${process.env.GITHUB_API_KEY}`,
-        }
-      : undefined;
-
-    const username = siteConfig.github.username;
-    const currentRepoName =
-      siteConfig.github.repo.split("/").pop()?.toLowerCase() ?? "";
-    const excludedRepoNames = new Set([
-      username.toLowerCase(),
-      currentRepoName,
-    ]);
-
-    const [user, allRepos] = await Promise.all([
-      fetchGithubJson<User>(
-        `https://api.github.com/users/${username}`,
-        headers
-      ),
-      getAllRepos(username, headers),
-    ]);
-
-    const openSourceRepos = allRepos.filter(
-      (repo) => !repo.fork && !excludedRepoNames.has(repo.name.toLowerCase())
-    );
-    const repos = openSourceRepos.length > 0 ? openSourceRepos : allRepos;
-    const sortedRepos = sortReposByStars(repos);
-
-    return { user, repos, sortedRepos, loadError: false };
-  } catch (error) {
-    console.error(
-      "Failed to load GitHub data for the Open Source page.",
-      error
-    );
-
-    return {
-      user: null,
-      repos: [],
-      sortedRepos: [],
-      loadError: true,
-    };
-  }
-}
 
 export default async function OpenSourcePage() {
   const { user, repos, sortedRepos, loadError } = await getGithubData();
@@ -149,9 +61,9 @@ export default async function OpenSourcePage() {
             rel="noopener noreferrer"
             className={styles.profileLink}
           >
-            <VscGithub size={18} />
+            <VscGithub size={18} aria-hidden="true" />
             <span>View Profile</span>
-            <VscLinkExternal size={14} />
+            <VscLinkExternal size={14} aria-hidden="true" />
           </a>
         </header>
 
@@ -170,7 +82,7 @@ export default async function OpenSourcePage() {
         <div className={styles.statsGrid}>
           <div className={styles.statCard}>
             <div className={styles.statIcon}>
-              <VscRepo size={20} />
+              <VscRepo size={20} aria-hidden="true" />
             </div>
             <div className={styles.statInfo}>
               <span className={styles.statValue}>{repos.length}</span>
@@ -180,7 +92,7 @@ export default async function OpenSourcePage() {
 
           <div className={styles.statCard}>
             <div className={styles.statIcon}>
-              <VscPerson size={20} />
+              <VscPerson size={20} aria-hidden="true" />
             </div>
             <div className={styles.statInfo}>
               <span className={styles.statValue}>{user?.followers ?? 0}</span>
@@ -190,7 +102,7 @@ export default async function OpenSourcePage() {
 
           <div className={styles.statCard}>
             <div className={styles.statIcon}>
-              <VscStarEmpty size={20} />
+              <VscStarEmpty size={20} aria-hidden="true" />
             </div>
             <div className={styles.statInfo}>
               <span className={styles.statValue}>{totalStars}</span>
@@ -200,7 +112,7 @@ export default async function OpenSourcePage() {
 
           <div className={styles.statCard}>
             <div className={styles.statIcon}>
-              <VscRepoForked size={20} />
+              <VscRepoForked size={20} aria-hidden="true" />
             </div>
             <div className={styles.statInfo}>
               <span className={styles.statValue}>{totalForks}</span>
@@ -211,20 +123,13 @@ export default async function OpenSourcePage() {
 
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Contribution Activity</h2>
-          <div className={styles.contributions}>
-            <GitHubCalendar
-              username={siteConfig.github.username}
-              hideColorLegend
-              hideMonthLabels
-              colorScheme="dark"
-              theme={{
-                dark: ["#161B22", "#0e4429", "#006d32", "#26a641", "#39d353"],
-                light: ["#161B22", "#0e4429", "#006d32", "#26a641", "#39d353"],
-              }}
-              style={{
-                width: "100%",
-              }}
-            />
+          <div
+            className={styles.contributions}
+            tabIndex={0}
+            aria-label="GitHub contribution activity calendar"
+            role="region"
+          >
+            <GitHubActivity username={siteConfig.github.username} />
           </div>
         </section>
 
@@ -238,7 +143,7 @@ export default async function OpenSourcePage() {
               className={styles.viewAll}
             >
               View All
-              <VscLinkExternal size={14} />
+              <VscLinkExternal size={14} aria-hidden="true" />
             </a>
           </div>
 

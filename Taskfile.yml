@@ -34,6 +34,21 @@ tasks:
     cmds:
       - "{{.PNPM}} run typecheck"
 
+  test:
+    desc: Run unit and component tests
+    cmds:
+      - "{{.PNPM}} run test"
+
+  test:e2e:
+    desc: Run Playwright end-to-end tests
+    cmds:
+      - "{{.PNPM}} run test:e2e"
+
+  test:a11y:
+    desc: Run Playwright accessibility checks
+    cmds:
+      - "{{.PNPM}} run test:a11y"
+
   build:
     desc: Production build
     cmds:
@@ -49,9 +64,22 @@ tasks:
   security:
     desc: Run local security checks
     cmds:
-      - cmd: gitleaks detect --source . --verbose
-        ignore_error: true
-      - "{{.PNPM}} audit --audit-level=high --prod"
+      - "{{.PNPM}} run security"
+
+  link:check:
+    desc: Check documentation links
+    cmds:
+      - "{{.PNPM}} run link:check"
+
+  badge:check:
+    desc: Check README badge image and target URLs
+    cmds:
+      - "{{.PNPM}} run badge:check"
+
+  release:dry-run:
+    desc: Validate release automation without creating a release
+    cmds:
+      - "{{.PNPM}} run release:dry-run"
 
   ci:
     desc: Run full local CI
@@ -60,5 +88,11 @@ tasks:
       - task: format:check
       - task: lint
       - task: typecheck
-      - task: build
+      - task: test
+      - task: test:e2e
+      - task: test:a11y
       - task: security
+      - task: link:check
+      - task: badge:check
+      - task: release:dry-run
+      - task: build

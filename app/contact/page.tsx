@@ -3,11 +3,13 @@ import { Metadata } from "next";
 import ContactCode from "@/components/ContactCode";
 
 import { siteConfig } from "@/data/site";
+import { createPageMetadata } from "@/lib/metadata";
 import styles from "@/styles/ContactPage.module.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Contact",
-};
+  path: "/contact",
+});
 
 const ContactPage = () => {
   return (

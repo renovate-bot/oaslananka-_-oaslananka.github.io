@@ -6,4 +6,4 @@ allowBuilds:
   unrs-resolver: true
 
 overrides:
-  "next@16.2.4>postcss": 8.5.10
+  next>postcss: 8.5.14

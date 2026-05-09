@@ -17,6 +17,7 @@ import {
 } from "react-icons/vsc";
 import { MdNavigateNext } from "react-icons/md";
 
+import { applyTheme } from "@/components/ThemeBootstrap";
 import { THEMES } from "@/lib/themes";
 import styles from "@/styles/CommandPalette.module.css";
 
@@ -154,8 +155,7 @@ const CommandPalette = ({
       if (showThemePicker) {
         if (index < filteredThemes.length) {
           const theme = filteredThemes[index];
-          document.documentElement.setAttribute("data-theme", theme.theme);
-          localStorage.setItem("theme", theme.theme);
+          applyTheme(theme.theme);
           onClose();
         }
       } else {
@@ -241,7 +241,13 @@ const CommandPalette = ({
 
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.container} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={styles.container}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Command Palette"
+      >
         <div className={styles.inputWrapper}>
           <VscGoToFile size={20} className={styles.inputIcon} />
           <input
@@ -257,6 +263,7 @@ const CommandPalette = ({
             className={styles.input}
             spellCheck={false}
             autoComplete="off"
+            aria-label="Search commands"
           />
           {searchQuery && (
             <button
@@ -265,13 +272,14 @@ const CommandPalette = ({
                 updateSearchQuery("");
                 inputRef.current?.focus();
               }}
+              aria-label="Clear search"
             >
               ×
             </button>
           )}
         </div>
 
-        <div className={styles.results} ref={listRef}>
+        <div className={styles.results} ref={listRef} role="listbox">
           {showThemePicker ? (
             filteredThemes.length === 0 ? (
               <div className={styles.noResults}>No matching themes</div>
@@ -279,13 +287,16 @@ const CommandPalette = ({
               <>
                 <div className={styles.category}>Color Theme</div>
                 {filteredThemes.map((theme, themeIndex) => (
-                  <div
+                  <button
                     key={theme.theme}
                     className={`${styles.item} ${
                       selectedIndex === themeIndex ? styles.selected : ""
                     }`}
                     onClick={() => handleSelect(themeIndex)}
                     onMouseEnter={() => setSelectedIndex(themeIndex)}
+                    type="button"
+                    role="option"
+                    aria-selected={selectedIndex === themeIndex}
                   >
                     <div className={styles.itemIcon}>
                       <VscColorMode size={16} />
@@ -296,7 +307,7 @@ const CommandPalette = ({
                         {theme.publisher}
                       </span>
                     </div>
-                  </div>
+                  </button>
                 ))}
               </>
             )
@@ -315,12 +326,15 @@ const CommandPalette = ({
                     {showCategory && (
                       <div className={styles.category}>{cmd.category}</div>
                     )}
-                    <div
+                    <button
                       className={`${styles.item} ${
                         selectedIndex === currentIndex ? styles.selected : ""
                       }`}
                       onClick={() => handleSelect(currentIndex)}
                       onMouseEnter={() => setSelectedIndex(currentIndex)}
+                      type="button"
+                      role="option"
+                      aria-selected={selectedIndex === currentIndex}
                     >
                       <div className={styles.itemIcon}>{cmd.icon}</div>
                       <div className={styles.itemContent}>
@@ -339,7 +353,7 @@ const CommandPalette = ({
                           )}
                         </div>
                       )}
-                    </div>
+                    </button>
                   </div>
                 );
               });

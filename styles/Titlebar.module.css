@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: var(--font-source-sans), system-ui, sans-serif;
   font-size: 0.85rem;
   border-bottom: 1px solid #191d20;
 }
@@ -28,9 +28,19 @@
   cursor: pointer;
 }
 
-.menuItem:hover {
+.menuButton {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.menuButton:hover,
+.menuButton:focus-visible {
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
+  outline: 1px solid var(--accent-color);
+  outline-offset: 1px;
 }
 
 .windowButtons {

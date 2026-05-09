@@ -37,7 +37,7 @@ const ThemeInfo = ({
         />
         {isActive && (
           <div className={styles.check}>
-            <VscCheck size={14} />
+            <VscCheck size={14} aria-hidden="true" />
           </div>
         )}
       </div>
