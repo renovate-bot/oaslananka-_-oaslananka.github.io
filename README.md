@@ -43,7 +43,7 @@ own portfolio content, GitHub data, and deployment setup.
 
 ```bash
 corepack enable
-corepack prepare pnpm@11.0.8 --activate
+corepack prepare pnpm@11.0.9 --activate
 pnpm install --frozen-lockfile
 pnpm dev
 ```
@@ -73,8 +73,8 @@ The same effective gates are available through `task ci`.
 
 Create an `.env.local` file when you want live third-party data:
 
-- `GITHUB_API_KEY`: optional, improves GitHub API rate limits for public repo
-  data
+- `GITHUB_API_KEY`: server-only token required in production/preview when live
+  GitHub stats are enabled
 - `NEXT_PUBLIC_GITHUB_USERNAME`: public GitHub username
 - `NEXT_PUBLIC_GITHUB_REPO`: source repository shown inside the portfolio
 

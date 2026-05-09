@@ -17,7 +17,7 @@ This is a personal portfolio. Contributions are welcome for:
 git clone https://github.com/oaslananka/oaslananka.github.io.git
 cd oaslananka.github.io
 corepack enable
-corepack prepare pnpm@11.0.8 --activate
+corepack prepare pnpm@11.0.9 --activate
 pnpm install --frozen-lockfile
 pnpm dev
 ```

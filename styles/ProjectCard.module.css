@@ -123,6 +123,9 @@
 
 .action {
   display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .link {
@@ -135,6 +138,57 @@
   opacity: 0;
   transform: translateX(-10px);
   transition: all 0.3s ease;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.stack li {
+  padding: 4px 8px;
+  border: 1px solid var(--explorer-border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 11px;
+}
+
+.highlights {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.highlights li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.highlights svg {
+  color: var(--accent-color);
+  flex: 0 0 auto;
+  margin-top: 3px;
 }
 
 .card:hover .link {

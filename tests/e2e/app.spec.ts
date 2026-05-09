@@ -27,6 +27,34 @@ test("command palette navigates by keyboard", async ({ page }) => {
   await expect(page).toHaveURL(/\/contact$/);
 });
 
+test("command palette traps focus and restores focus on close", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const opener = page.getByRole("button", { name: "View" });
+  await opener.focus();
+  await page.keyboard.press("Enter");
+
+  const search = page.getByLabel("Search commands");
+  await expect(search).toBeFocused();
+  await expect(search).toHaveAttribute(
+    "aria-activedescendant",
+    "command-palette-command-go-home"
+  );
+
+  await page.keyboard.press("Shift+Tab");
+  await expect(
+    page.getByRole("option", { name: /Change Color Theme/ })
+  ).toBeFocused();
+
+  await page.keyboard.press("Tab");
+  await expect(search).toBeFocused();
+
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toBeHidden();
+  await expect(opener).toBeFocused();
+});
+
 test("terminal can be opened and closed", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Toggle terminal" }).click();
@@ -52,4 +80,17 @@ test("metadata routes are generated", async ({ page }) => {
 
   await page.goto("/sitemap.xml");
   await expect(page.locator("body")).toContainText("https://oaslananka.dev/");
+});
+
+test("security headers include CSP report-only policy", async ({ request }) => {
+  const response = await request.get("/");
+  const headers = response.headers();
+
+  expect(headers["x-content-type-options"]).toBe("nosniff");
+  expect(headers["x-frame-options"]).toBe("DENY");
+  expect(headers["referrer-policy"]).toBe("strict-origin-when-cross-origin");
+  expect(headers["cross-origin-opener-policy"]).toBe("same-origin");
+  expect(headers["content-security-policy-report-only"]).toContain(
+    "default-src 'self'"
+  );
 });

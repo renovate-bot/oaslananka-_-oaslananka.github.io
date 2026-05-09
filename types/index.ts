@@ -15,6 +15,14 @@ export interface Project {
   logo: string;
   link: string;
   slug: string;
+  status?: "active" | "maintained" | "archived";
+  stack?: string[];
+  highlights?: string[];
+  links?: {
+    source?: string;
+    demo?: string;
+    docs?: string;
+  };
 }
 
 export interface Repo {

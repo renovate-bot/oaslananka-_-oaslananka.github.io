@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { VscLinkExternal } from "react-icons/vsc";
+import { VscCheck, VscLinkExternal, VscSourceControl } from "react-icons/vsc";
 
 import { Project } from "@/types";
 
@@ -38,9 +38,34 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           </div>
 
           <p className={styles.description}>{project.description}</p>
+
+          {project.stack && project.stack.length > 0 ? (
+            <ul className={styles.stack} aria-label={`${project.title} stack`}>
+              {project.stack.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          ) : null}
+
+          {project.highlights && project.highlights.length > 0 ? (
+            <ul className={styles.highlights}>
+              {project.highlights.map((highlight) => (
+                <li key={highlight}>
+                  <VscCheck size={13} aria-hidden="true" />
+                  <span>{highlight}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
         </div>
 
         <div className={styles.action}>
+          {project.status ? (
+            <span className={styles.status}>
+              <VscSourceControl size={12} aria-hidden="true" />
+              {project.status}
+            </span>
+          ) : null}
           <span className={styles.link}>
             View Project
             <VscLinkExternal size={12} aria-hidden="true" />

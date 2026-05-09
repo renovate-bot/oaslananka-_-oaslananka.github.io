@@ -48,12 +48,26 @@ const CommandPalette = ({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [showThemePicker, setShowThemePicker] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   const updateSearchQuery = useCallback((value: string) => {
     setSearchQuery(value);
     setSelectedIndex(0);
   }, []);
+
+  const resetPalette = useCallback(() => {
+    setSearchQuery("");
+    setSelectedIndex(0);
+    setShowThemePicker(false);
+  }, []);
+
+  const closePalette = useCallback(() => {
+    resetPalette();
+    onClose();
+  }, [onClose, resetPalette]);
 
   const getCommands = useCallback((): Command[] => {
     const baseCommands: Command[] = [
@@ -149,6 +163,13 @@ const CommandPalette = ({
   const filteredThemes = THEMES.filter((theme) =>
     theme.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  const activeItemId = showThemePicker
+    ? filteredThemes[selectedIndex]
+      ? `command-palette-theme-${filteredThemes[selectedIndex].theme}`
+      : undefined
+    : filteredCommands[selectedIndex]
+      ? `command-palette-command-${filteredCommands[selectedIndex].id}`
+      : undefined;
 
   const handleSelect = useCallback(
     (index: number) => {
@@ -156,18 +177,18 @@ const CommandPalette = ({
         if (index < filteredThemes.length) {
           const theme = filteredThemes[index];
           applyTheme(theme.theme);
-          onClose();
+          closePalette();
         }
       } else {
         if (index < filteredCommands.length) {
           filteredCommands[index].action();
           if (filteredCommands[index].id !== "change-theme") {
-            onClose();
+            closePalette();
           }
         }
       }
     },
-    [filteredCommands, filteredThemes, onClose, showThemePicker]
+    [closePalette, filteredCommands, filteredThemes, showThemePicker]
   );
 
   const handleKeyDown = useCallback(
@@ -180,7 +201,28 @@ const CommandPalette = ({
           updateSearchQuery("");
           setSelectedIndex(0);
         } else {
-          onClose();
+          closePalette();
+        }
+        return;
+      }
+
+      if (e.key === "Tab") {
+        const focusable = Array.from(
+          containerRef.current?.querySelectorAll<HTMLElement>(
+            'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+          ) ?? []
+        );
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (!first || !last) return;
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
         }
         return;
       }
@@ -202,7 +244,7 @@ const CommandPalette = ({
     },
     [
       isOpen,
-      onClose,
+      closePalette,
       filteredCommands,
       filteredThemes,
       selectedIndex,
@@ -218,30 +260,31 @@ const CommandPalette = ({
   }, [handleKeyDown]);
 
   useEffect(() => {
-    if (isOpen && inputRef.current) {
-      inputRef.current.focus();
-      updateSearchQuery("");
-      setSelectedIndex(0);
-      setShowThemePicker(false);
-    }
-  }, [isOpen, updateSearchQuery]);
+    if (!isOpen) return;
+
+    previousFocusRef.current =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+    inputRef.current?.focus();
+
+    return () => {
+      previousFocusRef.current?.focus();
+    };
+  }, [isOpen]);
 
   useEffect(() => {
-    if (listRef.current && selectedIndex >= 0) {
-      const selectedElement = listRef.current.children[
-        selectedIndex
-      ] as HTMLElement;
-      if (selectedElement) {
-        selectedElement.scrollIntoView({ block: "nearest" });
-      }
+    if (selectedIndex >= 0) {
+      itemRefs.current[selectedIndex]?.scrollIntoView({ block: "nearest" });
     }
-  }, [selectedIndex]);
+  }, [selectedIndex, searchQuery, showThemePicker]);
 
   if (!isOpen) return null;
 
   return (
-    <div className={styles.overlay} onClick={onClose}>
+    <div className={styles.overlay} onClick={closePalette}>
       <div
+        ref={containerRef}
         className={styles.container}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
@@ -264,6 +307,10 @@ const CommandPalette = ({
             spellCheck={false}
             autoComplete="off"
             aria-label="Search commands"
+            role="combobox"
+            aria-expanded="true"
+            aria-controls="command-palette-results"
+            aria-activedescendant={activeItemId}
           />
           {searchQuery && (
             <button
@@ -279,16 +326,28 @@ const CommandPalette = ({
           )}
         </div>
 
-        <div className={styles.results} ref={listRef} role="listbox">
+        <div
+          className={styles.results}
+          id="command-palette-results"
+          ref={listRef}
+          role="listbox"
+          aria-label={showThemePicker ? "Color themes" : "Commands"}
+        >
           {showThemePicker ? (
             filteredThemes.length === 0 ? (
               <div className={styles.noResults}>No matching themes</div>
             ) : (
               <>
-                <div className={styles.category}>Color Theme</div>
+                <div className={styles.category} role="presentation">
+                  Color Theme
+                </div>
                 {filteredThemes.map((theme, themeIndex) => (
                   <button
                     key={theme.theme}
+                    id={`command-palette-theme-${theme.theme}`}
+                    ref={(element) => {
+                      itemRefs.current[themeIndex] = element;
+                    }}
                     className={`${styles.item} ${
                       selectedIndex === themeIndex ? styles.selected : ""
                     }`}
@@ -324,9 +383,15 @@ const CommandPalette = ({
                 return (
                   <div key={cmd.id}>
                     {showCategory && (
-                      <div className={styles.category}>{cmd.category}</div>
+                      <div className={styles.category} role="presentation">
+                        {cmd.category}
+                      </div>
                     )}
                     <button
+                      id={`command-palette-command-${cmd.id}`}
+                      ref={(element) => {
+                        itemRefs.current[currentIndex] = element;
+                      }}
                       className={`${styles.item} ${
                         selectedIndex === currentIndex ? styles.selected : ""
                       }`}

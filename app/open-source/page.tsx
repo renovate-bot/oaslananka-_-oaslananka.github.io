@@ -24,10 +24,15 @@ export const metadata: Metadata = createPageMetadata({
 
 export const revalidate = 600;
 
+function formatLiveStat(value: number, isAvailable: boolean) {
+  return isAvailable ? value.toLocaleString("en-US") : "—";
+}
+
 export default async function OpenSourcePage() {
   const { user, repos, sortedRepos, loadError } = await getGithubData();
   const profileLogin = user?.login ?? siteConfig.github.username;
   const profileUrl = `https://github.com/${profileLogin}`;
+  const statsAvailable = !loadError;
   const totalStars = repos.reduce(
     (acc, repo) => acc + repo.stargazers_count,
     0
@@ -85,7 +90,12 @@ export default async function OpenSourcePage() {
               <VscRepo size={20} aria-hidden="true" />
             </div>
             <div className={styles.statInfo}>
-              <span className={styles.statValue}>{repos.length}</span>
+              <span
+                className={styles.statValue}
+                aria-label={statsAvailable ? undefined : "Unavailable"}
+              >
+                {formatLiveStat(repos.length, statsAvailable)}
+              </span>
               <span className={styles.statLabel}>Open Source Repos</span>
             </div>
           </div>
@@ -95,7 +105,12 @@ export default async function OpenSourcePage() {
               <VscPerson size={20} aria-hidden="true" />
             </div>
             <div className={styles.statInfo}>
-              <span className={styles.statValue}>{user?.followers ?? 0}</span>
+              <span
+                className={styles.statValue}
+                aria-label={statsAvailable ? undefined : "Unavailable"}
+              >
+                {formatLiveStat(user?.followers ?? 0, statsAvailable)}
+              </span>
               <span className={styles.statLabel}>Followers</span>
             </div>
           </div>
@@ -105,7 +120,12 @@ export default async function OpenSourcePage() {
               <VscStarEmpty size={20} aria-hidden="true" />
             </div>
             <div className={styles.statInfo}>
-              <span className={styles.statValue}>{totalStars}</span>
+              <span
+                className={styles.statValue}
+                aria-label={statsAvailable ? undefined : "Unavailable"}
+              >
+                {formatLiveStat(totalStars, statsAvailable)}
+              </span>
               <span className={styles.statLabel}>Total Stars</span>
             </div>
           </div>
@@ -115,7 +135,12 @@ export default async function OpenSourcePage() {
               <VscRepoForked size={20} aria-hidden="true" />
             </div>
             <div className={styles.statInfo}>
-              <span className={styles.statValue}>{totalForks}</span>
+              <span
+                className={styles.statValue}
+                aria-label={statsAvailable ? undefined : "Unavailable"}
+              >
+                {formatLiveStat(totalForks, statsAvailable)}
+              </span>
               <span className={styles.statLabel}>Total Forks</span>
             </div>
           </div>

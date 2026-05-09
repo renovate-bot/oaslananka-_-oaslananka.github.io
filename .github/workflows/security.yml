@@ -94,7 +94,7 @@ jobs:
 
       - uses: pnpm/action-setup@91ab88e2619ed1f46221f0ba42d1492c02baf788
         with:
-          version: 11.0.8
+          version: 11.0.9
 
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
         with:
@@ -167,10 +167,9 @@ jobs:
         with:
           persist-credentials: false
 
+      - uses: astral-sh/setup-uv@803947b9bd8e9f986429fa0c5a41c367cd732b41
+
       - name: Audit workflow security
         run: |
           set -euo pipefail
-          python -m pip install zizmor --break-system-packages 2>/dev/null || \
-            python -m pip install --user zizmor
-          export PATH="${HOME}/.local/bin:${PATH}"
-          zizmor .github/workflows/ --min-severity medium
+          uvx zizmor .github/workflows/ --min-severity medium

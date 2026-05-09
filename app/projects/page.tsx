@@ -29,16 +29,18 @@ const ProjectsPage = () => {
               />
             </div>
             <div className={styles.meta}>
-              <span className={styles.count}>{totalProjects} Links</span>
+              <span className={styles.count}>
+                {totalProjects} Featured Projects
+              </span>
             </div>
           </div>
 
           <div className={styles.headerContent}>
-            <h1 className={styles.title}>GitHub Access</h1>
+            <h1 className={styles.title}>Selected Work</h1>
             <p className={styles.subtitle}>
-              Direct links to my GitHub profile and the full repository list.
-              This section stays intentionally simple so the focus remains on
-              the code itself.
+              Curated engineering artifacts behind the portfolio, repository
+              operations, and open-source surface. Live GitHub data enriches the
+              site, but these entries remain available offline.
             </p>
           </div>
         </header>
