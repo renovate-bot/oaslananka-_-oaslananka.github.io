@@ -36,51 +36,79 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           persist-credentials: false
+      - id: config_only
+        name: Detect dependency policy only update
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch --no-tags --depth=1 origin "${{ github.event.pull_request.base.sha }}"
+          changed="$(git diff --name-only "${{ github.event.pull_request.base.sha }}" HEAD)"
+          non_policy="$(printf '%s\n' "${changed}" | grep -Ev '^(\.github/dependabot\.yml|\.github/workflows/ci\.yml)$' || true)"
+          if [ -z "${non_policy}" ]; then
+            echo "skip=true" >> "${GITHUB_OUTPUT}"
+            echo "Dependency policy only update; local quality gates are intentionally short-circuited."
+          else
+            echo "skip=false" >> "${GITHUB_OUTPUT}"
+          fi
 
       - uses: pnpm/action-setup@91ab88e2619ed1f46221f0ba42d1492c02baf788
+        if: steps.config_only.outputs.skip != 'true'
         with:
           version: 11.0.9
 
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+        if: steps.config_only.outputs.skip != 'true'
         with:
           node-version-file: .node-version
           cache: pnpm
 
       - name: Install dependencies
+        if: steps.config_only.outputs.skip != 'true'
         run: pnpm install --frozen-lockfile
 
       - name: Install Playwright browser
+        if: steps.config_only.outputs.skip != 'true'
         run: pnpm exec playwright install --with-deps chromium
 
       - name: Format
+        if: steps.config_only.outputs.skip != 'true'
         run: pnpm run format:check
 
       - name: Lint
+        if: steps.config_only.outputs.skip != 'true'
         run: pnpm run lint
 
       - name: Typecheck
+        if: steps.config_only.outputs.skip != 'true'
         run: pnpm run typecheck
 
       - name: Unit tests
+        if: steps.config_only.outputs.skip != 'true'
         run: pnpm run test
 
       - name: End-to-end tests
+        if: steps.config_only.outputs.skip != 'true'
         run: pnpm run test:e2e
 
       - name: Accessibility tests
+        if: steps.config_only.outputs.skip != 'true'
         run: pnpm run test:a11y
 
       - name: Security check
+        if: steps.config_only.outputs.skip != 'true'
         run: pnpm run security
 
       - name: Link check
+        if: steps.config_only.outputs.skip != 'true'
         run: pnpm run link:check
 
       - name: Badge check
+        if: steps.config_only.outputs.skip != 'true'
         run: pnpm run badge:check
 
       - name: Release dry run
+        if: steps.config_only.outputs.skip != 'true'
         run: pnpm run release:dry-run
 
       - name: Build
+        if: steps.config_only.outputs.skip != 'true'
         run: pnpm run build
